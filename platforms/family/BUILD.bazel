@@ -1,0 +1,13 @@
+package(default_visibility = ["//visibility:public"])
+
+constraint_setting(name = "family")
+
+constraint_value(
+    name = "redhat",
+    constraint_setting = ":family",
+)
+
+constraint_value(
+    name = "debian",
+    constraint_setting = ":family",
+)

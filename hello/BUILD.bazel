@@ -1,0 +1,6 @@
+cc_binary(
+    name = "hello",
+    srcs = ["hello.c"],
+    visibility = ["//visibility:public"],
+)
+# TODO tests that check output
