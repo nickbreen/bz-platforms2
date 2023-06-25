@@ -10,7 +10,7 @@ pkg_files(
 )
 
 pkg_tar(
-    name = "tgz",
+    name = "tar",
     srcs = [":hello"],
 )
 
@@ -18,18 +18,24 @@ pkg_rpm(
     name = "rpm",
     package_name = "hello",
     srcs = [":hello"],
+    description = "Hello GLIBC",
+    exec_compatible_with = ["//platforms/family:redhat"],
     license = "MIT",
+    release = "0",
     requires = ["glibc"],
-    summary = "Hello World",
+    summary = "Hello GLIBC",
+    target_compatible_with = ["//platforms/family:redhat"],
     version = "0",
 )
 
 pkg_deb(
     name = "deb",
-    data = ":tgz",
+    data = ":tar",
     depends = ["libc6"],
-    description = "Hello World",
-    maintainer = "example@example.com",
+    description = "Hello GLIBC",
+    exec_compatible_with = ["//platforms/family:debian"],
+    maintainer = "glibc@example.com",
     package = "hello",
+    target_compatible_with = ["//platforms/family:debian"],
     version = "0",
 )

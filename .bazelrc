@@ -5,4 +5,11 @@ test --test_output=errors
 common --enable_bzlmod
 common --announce_rc
 
-build --toolchain_resolution_debug='@rules_pkg~.*//toolchains/rpm:rpmbuild_toolchain_type'
+build:docker --experimental_docker_verbose
+build:docker --experimental_enable_docker_sandbox
+build:docker --experimental_docker_use_customized_images  # We'll need to customise them ourselves
+build:docker --spawn_strategy=docker
+
+build:remote --spawn_strategy=remote
+
+build --incompatible_enable_cc_toolchain_resolution  # appears to be on by default in 6.2.1?

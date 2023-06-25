@@ -1,7 +1,9 @@
 register_toolchains(
-    "//toolchains:python",
-    "//toolchains:redhat",
-    "//toolchains:no-rpmbuild",
+    "//toolchains/python:python",
+    "//toolchains/rpmbuild:redhat",
+    "//toolchains/rpmbuild:no-rpmbuild",
+    "//toolchains/cc:centos/6",
+    "//toolchains/cc:centos/7",
 )
 
 register_execution_platforms(

@@ -1,0 +1,89 @@
+# C toolchains - vary by platform
+load("@rules_cc//cc:defs.bzl", "cc_toolchain")
+load(":defs.bzl", "cc_toolchain_config")
+
+filegroup(name = "none")
+
+cc_toolchain_config(
+    name = "config/redhat/4.4.7",
+    compiler = "gcc-4.4.7",
+    includes = [
+        "/usr/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include",
+    ],
+    target_libc = "glibc-2.12",
+    toolchain_identifier = "k8-gblic-2.12",
+)
+
+cc_toolchain(
+    name = "redhat/2.12",
+    all_files = ":none",
+    compiler_files = ":none",
+    dwp_files = ":none",
+    linker_files = ":none",
+    objcopy_files = ":none",
+    strip_files = ":none",
+    supports_param_files = 0,
+    toolchain_config = ":config/redhat/4.4.7",
+    toolchain_identifier = "cc_redhat_2.12",
+)
+
+toolchain(
+    name = "centos/6",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+        "//platforms/family:redhat",
+        "//platforms/glibc:2.12",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+        "//platforms/family:redhat",
+        "//platforms/glibc:2.12",
+    ],
+    toolchain = ":redhat/2.12",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
+
+cc_toolchain_config(
+    name = "config/redhat/4.8.5",
+    compiler = "gcc-4.8.5",
+    includes = [
+        "/usr/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include",
+    ],
+    target_libc = "glibc-2.17",
+    toolchain_identifier = "k8-gblic-2.17",
+)
+
+cc_toolchain(
+    name = "redhat/2.17",
+    all_files = ":none",
+    compiler_files = ":none",
+    dwp_files = ":none",
+    linker_files = ":none",
+    objcopy_files = ":none",
+    strip_files = ":none",
+    supports_param_files = 0,
+    toolchain_config = ":config/redhat/4.8.5",
+    toolchain_identifier = "cc_redhat_2.17",
+)
+
+toolchain(
+    name = "centos/7",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+        "//platforms/family:redhat",
+        "//platforms/glibc:2.17",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+        "//platforms/family:redhat",
+        "//platforms/glibc:2.17",
+    ],
+    toolchain = ":redhat/2.17",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)

@@ -1,0 +1,4 @@
+FROM rockylinux:8
+
+RUN yum install --assumeyes rpm-build python3 glibc-devel gcc && yum clean all
+RUN getent group 100 | { IFS=: read group _ gid; userdel games; groupdel $group; }

@@ -1,6 +1,7 @@
 platform(
     name = "redhat",
     constraint_values = [
+        "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
     ],
@@ -12,7 +13,7 @@ platform(
         "//platforms/glibc:2.28",
     ],
     exec_properties = {
-        "container-image": "docker://rockylinux:8",
+        "container-image": "docker://executors/rockylinux:8",
     },
     parents = [":redhat"],
 )
@@ -23,7 +24,7 @@ platform(
         "//platforms/glibc:2.34",
     ],
     exec_properties = {
-        "container-image": "docker://rockylinux:9",
+        "container-image": "docker://executors/rockylinux:9",
     },
     parents = [":redhat"],
 )
@@ -34,7 +35,7 @@ platform(
         "//platforms/glibc:2.12",
     ],
     exec_properties = {
-        "container-image": "docker://centos:6",
+        "container-image": "docker://executors/centos:6",
     },
     parents = [":redhat"],
 )
@@ -45,7 +46,7 @@ platform(
         "//platforms/glibc:2.17",
     ],
     exec_properties = {
-        "container-image": "docker://centos:7",
+        "container-image": "docker://executors/centos:7",
     },
     parents = [":redhat"],
 )
@@ -56,7 +57,7 @@ platform(
         "//platforms/glibc:2.36",
     ],
     exec_properties = {
-        "container-image": "docker://fedora:37",
+        "container-image": "docker://executors/fedora:37",
     },
     parents = [":redhat"],
 )
@@ -67,7 +68,7 @@ platform(
         "//platforms/glibc:2.37",
     ],
     exec_properties = {
-        "container-image": "docker://fedora:38",
+        "container-image": "docker://executors/fedora:38",
     },
     parents = [":redhat"],
 )
@@ -75,6 +76,7 @@ platform(
 platform(
     name = "debian",
     constraint_values = [
+        "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
     ],
@@ -86,7 +88,7 @@ platform(
         "//platforms/glibc:2.31",
     ],
     exec_properties = {
-        "container-image": "docker://debian:11",
+        "container-image": "docker://executors/debian:11",
     },
     parents = [":debian"],
 )
@@ -97,7 +99,7 @@ platform(
         "//platforms/glibc:2.36",
     ],
     exec_properties = {
-        "container-image": "docker://debian:12",
+        "container-image": "docker://executors/debian:12",
     },
     parents = [":debian"],
 )
@@ -108,7 +110,7 @@ platform(
         "//platforms/glibc:2.36",
     ],
     exec_properties = {
-        "container-image": "docker://ubuntu:kinetic",
+        "container-image": "docker://executors/ubuntu:kinetic",
     },
     parents = [":debian"],
 )
@@ -119,7 +121,7 @@ platform(
         "//platforms/glibc:2.37",
     ],
     exec_properties = {
-        "container-image": "docker://eubuntu:lunar",
+        "container-image": "docker://executors/eubuntu:lunar",
     },
     parents = [":debian"],
 )

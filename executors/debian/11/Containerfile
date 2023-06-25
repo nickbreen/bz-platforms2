@@ -1,0 +1,4 @@
+FROM debian:11
+
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install --assume-yes gcc libc6-dev python3 && rm -rf /var/lib/apt/lists/*
+RUN getent group 100 | { IFS=: read group _ gid; groupdel $group; }
