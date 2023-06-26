@@ -14,15 +14,4 @@ register_toolchains(
     "//toolchains/cc:ubuntu/lunar",
 )
 
-register_execution_platforms(
-    "//platforms:centos/6",
-    "//platforms:centos/7",
-    "//platforms:debian/11",
-    "//platforms:debian/12",
-    "//platforms:fedora/37",
-    "//platforms:fedora/38",
-    "//platforms:rockylinux/8",
-    "//platforms:rockylinux/9",
-    "//platforms:ubuntu/kinetic",
-    "//platforms:ubuntu/lunar",
-)
+register_execution_platforms("//platforms:*")

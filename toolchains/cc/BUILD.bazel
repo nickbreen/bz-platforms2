@@ -52,10 +52,14 @@ cc_toolchain(
 toolchain(
     name = "centos/6",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.12",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.12",
     ],
@@ -96,10 +100,14 @@ cc_toolchain(
 toolchain(
     name = "centos/7",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.17",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.17",
     ],
@@ -140,10 +148,14 @@ cc_toolchain(
 toolchain(
     name = "rockylinux/8",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.28",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.28",
     ],
@@ -184,10 +196,14 @@ cc_toolchain(
 toolchain(
     name = "rockylinux/9",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.34",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.34",
     ],
@@ -228,10 +244,14 @@ cc_toolchain(
 toolchain(
     name = "fedora/37",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.36",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.36",
     ],
@@ -272,10 +292,14 @@ cc_toolchain(
 toolchain(
     name = "fedora/38",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.37",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.37",
     ],
@@ -316,10 +340,14 @@ cc_toolchain(
 toolchain(
     name = "debian/11",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.31",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.31",
     ],
@@ -360,10 +388,14 @@ cc_toolchain(
 toolchain(
     name = "debian/12",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
@@ -404,10 +436,14 @@ cc_toolchain(
 toolchain(
     name = "ubuntu/kinetic",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
@@ -448,10 +484,14 @@ cc_toolchain(
 toolchain(
     name = "ubuntu/lunar",
     exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.37",
     ],
     target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.37",
     ],

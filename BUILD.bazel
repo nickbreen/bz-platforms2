@@ -3,27 +3,38 @@ load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 load(":defs.bzl", "platforms")
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+cc_binary(
+    name = "hello",
+    srcs = ["hello.c"],
+)
+
+platforms(
+    name = "hellos",
+    actual = ":hello",
+)
 
 pkg_files(
-    name = "hello",
-    srcs = ["//hello"],
+    name = "opt/hello",
+    srcs = [":hello"],
     prefix = "/opt/hello",
 )
 
 pkg_tar(
     name = "tar",
-    srcs = [":hello"],
+    srcs = [":opt/hello"],
     target_compatible_with = select({
         "//platforms/family:redhat": [],
         "//platforms/family:debian": [],
-        "//conditions:default": [],
+        "//conditions:default": ["@platforms//:incompatible"],
     }),
 )
 
 pkg_rpm(
     name = "rpm",
     package_name = "hello",
-    srcs = [":hello"],
+    srcs = [":opt/hello"],
     description = "Hello GLIBC",
     exec_compatible_with = ["//platforms/family:redhat"],
     license = "MIT",
@@ -49,7 +60,6 @@ pkg_deb(
 platforms(
     name = "tars",
     actual = ":tar",
-    exec_compatible_with = [],
 )
 
 platforms(

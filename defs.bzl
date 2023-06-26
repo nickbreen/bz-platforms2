@@ -22,14 +22,14 @@ def _all_platforms_transition(settings, attr):
         return {
             "centos/6": {"//command_line_option:platforms": "//platforms:centos/6"},
             "centos/7": {"//command_line_option:platforms": "//platforms:centos/7"},
-            "debian/11": {"//command_line_option:platforms": "//platforms:debian/11"},
-            "debian/12": {"//command_line_option:platforms": "//platforms:debian/12"},
-            "fedora/37": {"//command_line_option:platforms": "//platforms:fedora/37"},
-            "fedora/38": {"//command_line_option:platforms": "//platforms:fedora/38"},
-            "rockylinux/8": {"//command_line_option:platforms": "//platforms:rockylinux/8"},
-            "rockylinux/9": {"//command_line_option:platforms": "//platforms:rockylinux/9"},
-            "ubuntu/kinetic": {"//command_line_option:platforms": "//platforms:ubuntu/kinetic"},
-            "ubuntu/lunar": {"//command_line_option:platforms": "//platforms:ubuntu/lunar"},
+            #            "debian/11": {"//command_line_option:platforms": "//platforms:debian/11"},
+            #            "debian/12": {"//command_line_option:platforms": "//platforms:debian/12"},
+            #            "fedora/37": {"//command_line_option:platforms": "//platforms:fedora/37"},
+            #            "fedora/38": {"//command_line_option:platforms": "//platforms:fedora/38"},
+            #            "rockylinux/8": {"//command_line_option:platforms": "//platforms:rockylinux/8"},
+            #            "rockylinux/9": {"//command_line_option:platforms": "//platforms:rockylinux/9"},
+            #            "ubuntu/kinetic": {"//command_line_option:platforms": "//platforms:ubuntu/kinetic"},
+            #            "ubuntu/lunar": {"//command_line_option:platforms": "//platforms:ubuntu/lunar"},
         }
 
 all_platforms_transition = transition(
@@ -42,21 +42,20 @@ all_platforms_transition = transition(
 
 def _all_platforms(ctx):
     outs = []
-    for subdir_name in ctx.split_attr.actual:
-        subdir = ctx.actions.declare_directory(subdir_name)
-        ctx.actions.run(outputs = [subdir], executable = "mkdir", arguments = ["-vp", subdir.path])
-        outs += [subdir]
-        for file_name in ctx.split_attr.actual[subdir_name].files.to_list():
-            file = ctx.actions.declare_file(file_name.path, sibling = subdir)
-            ctx.actions.run(outputs = [file], inputs = [file_name], executable = "cp", arguments = ["-v", file_name.path, file.path])
-            outs += [file]
+    for in_dir in ctx.split_attr.actual:
+        out_dir = ctx.actions.declare_directory(in_dir)
+        ctx.actions.run(outputs = [out_dir], executable = "mkdir", arguments = ["-vp", out_dir.path])
+        for in_file in ctx.split_attr.actual[in_dir].files.to_list():
+            out_file = ctx.actions.declare_file(out_dir.path + "/" + in_file.basename)
+            outs += [out_file]
+            ctx.actions.run(outputs = [out_file], inputs = [in_file, out_dir], executable = "cp", arguments = ["-v", in_file.path, out_file.path])
 
     return [DefaultInfo(files = depset(outs))]
 
 all_platforms = rule(
     implementation = _all_platforms,
     attrs = {
-        "actual": attr.label(mandatory = True, cfg = all_platforms_transition, providers = [PackageArtifactInfo]),
+        "actual": attr.label(mandatory = True, cfg = all_platforms_transition),
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),

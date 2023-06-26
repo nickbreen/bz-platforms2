@@ -7,8 +7,9 @@ common --announce_rc
 
 build:docker --experimental_docker_verbose
 build:docker --experimental_enable_docker_sandbox
-build:docker --experimental_docker_use_customized_images  # We'll need to customise them ourselves
+#build:docker --experimental_docker_use_customized_images  # We'll need to customise them ourselves
 build:docker --spawn_strategy=docker
+build:docker --experimental_docker_privileged  # For SELinux
 
 build:remote --spawn_strategy=remote
 
