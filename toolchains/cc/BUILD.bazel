@@ -28,6 +28,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/4.4.4/include",
         "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include",
     ],
     host_system_name = "linux-gnu",
@@ -76,6 +77,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/4.8.2/include",
         "/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include",
     ],
     host_system_name = "linux-gnu",
@@ -124,7 +126,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/lib/gcc/x86_64-redhat-linux/8.5.0/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/8/include",
     ],
     host_system_name = "linux-gnu",
     target_libc = "glibc-2.28",
@@ -172,7 +174,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/lib/gcc/x86_64-redhat-linux/11.3.1/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/11/include",
     ],
     host_system_name = "linux-gnu",
     target_libc = "glibc-2.34",
@@ -220,7 +222,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/lib/gcc/x86_64-redhat-linux/12.3.1/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/12/include",
     ],
     host_system_name = "linux-gnu",
     target_libc = "glibc-2.36",
@@ -316,7 +318,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/include/x86_64-linux-gnu",
+        "/usr/lib/gcc/x86_64-linux-gnu/10/include",
     ],
     host_system_name = "linux-gnu",
     target_libc = "glibc-2.31",
@@ -364,7 +366,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/include/x86_64-linux-gnu",
+        "/usr/lib/gcc/x86_64-linux-gnu/12/include",
     ],
     host_system_name = "linux-gnu",
     target_libc = "glibc-2.36",
@@ -412,7 +414,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/include/x86_64-linux-gnu",
+        "/usr/lib/gcc/x86_64-linux-gnu/12/include",
     ],
     host_system_name = "linux-gnu",
     target_libc = "glibc-2.36",
@@ -460,7 +462,7 @@ cc_toolchain_config(
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/include/x86_64-linux-gnu",
+        "/usr/lib/gcc/x86_64-linux-gnu/12/include",
     ],
     host_system_name = "linux-gnu",
     target_libc = "glibc-2.37",

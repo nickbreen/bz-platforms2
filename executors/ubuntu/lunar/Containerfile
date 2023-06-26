@@ -2,3 +2,4 @@ FROM ubuntu:lunar
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install --assume-yes gcc libc6-dev python3 && rm -rf /var/lib/apt/lists/*
 RUN getent group 100 | { IFS=: read group _ gid; groupdel $group; }
+RUN getent passwd 1000 | { IFS=: read user _ uid; userdel --remove $user; }
