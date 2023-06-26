@@ -10,9 +10,13 @@ jobs:
 
   build:
 
-    runs-on: gcr.io/bazel-public/bazel:latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: ~/.cache/bazel
+        key: bazel
     - name: Bazel Build hellos
       run: bazel build //:hellos
