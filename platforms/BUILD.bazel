@@ -1,32 +1,19 @@
 platform(
+    name = "debian",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+        "//platforms/family:debian",
+    ],
+)
+
+platform(
     name = "redhat",
     constraint_values = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
     ],
-)
-
-platform(
-    name = "rockylinux/8",
-    constraint_values = [
-        "//platforms/glibc:2.28",
-    ],
-    exec_properties = {
-        "container-image": "docker://executors/rockylinux:8",
-    },
-    parents = [":redhat"],
-)
-
-platform(
-    name = "rockylinux/9",
-    constraint_values = [
-        "//platforms/glibc:2.34",
-    ],
-    exec_properties = {
-        "container-image": "docker://executors/rockylinux:9",
-    },
-    parents = [":redhat"],
 )
 
 platform(
@@ -52,37 +39,6 @@ platform(
 )
 
 platform(
-    name = "fedora/37",
-    constraint_values = [
-        "//platforms/glibc:2.36",
-    ],
-    exec_properties = {
-        "container-image": "docker://executors/fedora:37",
-    },
-    parents = [":redhat"],
-)
-
-platform(
-    name = "fedora/38",
-    constraint_values = [
-        "//platforms/glibc:2.37",
-    ],
-    exec_properties = {
-        "container-image": "docker://executors/fedora:38",
-    },
-    parents = [":redhat"],
-)
-
-platform(
-    name = "debian",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-        "//platforms/family:debian",
-    ],
-)
-
-platform(
     name = "debian/11",
     constraint_values = [
         "//platforms/glibc:2.31",
@@ -105,6 +61,50 @@ platform(
 )
 
 platform(
+    name = "fedora/37",
+    constraint_values = [
+        "//platforms/glibc:2.36",
+    ],
+    exec_properties = {
+        "container-image": "docker://executors/fedora:37",
+    },
+    parents = [":redhat"],
+)
+
+platform(
+    name = "fedora/38",
+    constraint_values = [
+        "//platforms/glibc:2.37",
+    ],
+    exec_properties = {
+        "container-image": "docker://executors/fedora:38",
+    },
+    parents = [":redhat"],
+)
+
+platform(
+    name = "rockylinux/8",
+    constraint_values = [
+        "//platforms/glibc:2.28",
+    ],
+    exec_properties = {
+        "container-image": "docker://executors/rockylinux:8",
+    },
+    parents = [":redhat"],
+)
+
+platform(
+    name = "rockylinux/9",
+    constraint_values = [
+        "//platforms/glibc:2.34",
+    ],
+    exec_properties = {
+        "container-image": "docker://executors/rockylinux:9",
+    },
+    parents = [":redhat"],
+)
+
+platform(
     name = "ubuntu/kinetic",
     constraint_values = [
         "//platforms/glibc:2.36",
@@ -121,7 +121,7 @@ platform(
         "//platforms/glibc:2.37",
     ],
     exec_properties = {
-        "container-image": "docker://executors/eubuntu:lunar",
+        "container-image": "docker://executors/ubuntu:lunar",
     },
     parents = [":debian"],
 )

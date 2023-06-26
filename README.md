@@ -2,14 +2,14 @@ We want to target platforms with varied GLIBC versions.
 
     OS             Family PKG GLIBC Dependency                  
     -------------- ------ --- ----- ----------------------------
-    rockylinux:8   redhat RPM  2.28 glibc-2.28-211.el8.x86_64   
-    rockylinux:9   redhat RPM  2.34 glibc-2.34-60.el9.x86_64    
     centos:6       redhat RPM  2.12 glibc-2.12-1.212.el6.x86_64 
     centos:7       redhat RPM  2.17 glibc-2.17-317.el7.x86_64   
-    fedora:37      redhat RPM  2.36 glibc-2.36-9.fc37.x86_64    
-    fedora:38      redhat RPM  2.37 glibc-2.37-4.fc38.x86_64    
     debian:11      debian DEB  2.31 libc6=2.31-13+deb11u5       
     debian:12      debian DEB  2.36 libc6=2.36-9                
+    fedora:37      redhat RPM  2.36 glibc-2.36-9.fc37.x86_64    
+    fedora:38      redhat RPM  2.37 glibc-2.37-4.fc38.x86_64    
+    rockylinux:8   redhat RPM  2.28 glibc-2.28-211.el8.x86_64   
+    rockylinux:9   redhat RPM  2.34 glibc-2.34-60.el9.x86_64    
     ubuntu:kinetic debian DEB  2.36 libc6=2.36-0ubuntu4         
     ubuntu:lunar   debian DEB  2.37 libc6=2.37-0ubuntu2         
 
@@ -41,8 +41,6 @@ The idea will be to build `hello.c` for each of these
 platforms and automatically build them in a matching
 container. We might also want one for the host system
 too, whatever that is.
-
-TODO toolchains for cc ?
 
 What next? Musl libc and Alpine! 
 
