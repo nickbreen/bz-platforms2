@@ -18,5 +18,8 @@ jobs:
       with:
         path: ~/.cache/bazel
         key: bazel
+    - name: Build executors
+      run: ./images.sh
     - name: Bazel Build hellos
       run: bazel build //:hellos
+
