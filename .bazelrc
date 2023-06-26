@@ -1,9 +1,11 @@
-build --incompatible_strict_action_env
-build --show_result=20
-test --test_output=errors
-
 common --enable_bzlmod
 common --announce_rc
+common --ui_actions_shown 64
+
+build --incompatible_strict_action_env
+build --show_result=20
+build --verbose_failures
+test --test_output=errors
 
 build:docker --experimental_docker_verbose
 build:docker --experimental_enable_docker_sandbox
@@ -14,5 +16,6 @@ build:docker --experimental_docker_privileged  # For SELinux
 build:remote --spawn_strategy=remote
 
 build --incompatible_enable_cc_toolchain_resolution  # appears to be on by default in 6.2.1?
-build --toolchain_resolution_debug @bazel_tools//tools/cpp:toolchain_type
-common --ui_actions_shown 64
+build --config=docker
+
+#build --toolchain_resolution_debug @bazel_tools//tools/cpp:toolchain_type
