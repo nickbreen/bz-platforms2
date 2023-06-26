@@ -13,3 +13,5 @@ build:docker --spawn_strategy=docker
 build:remote --spawn_strategy=remote
 
 build --incompatible_enable_cc_toolchain_resolution  # appears to be on by default in 6.2.1?
+build --toolchain_resolution_debug @bazel_tools//tools/cpp:toolchain_type
+common --ui_actions_shown 64

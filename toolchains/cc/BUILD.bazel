@@ -1,29 +1,50 @@
 # C toolchains - vary gcc/glibc versions and include paths by platform
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
-load(":defs.bzl", "cc_toolchain_config")
+load("@bazel_tools//tools/cpp:unix_cc_toolchain_config.bzl", "cc_toolchain_config")
 
-filegroup(name = "none")
+tool_paths = {
+    "ar": "/usr/bin/ar",
+    "ld": "/usr/bin/ld",
+    "llvm-cov": "/usr/bin/llvm-cov",
+    "llvm-profdata": "/usr/bin/llvm-profdata",
+    "cpp": "/usr/bin/cpp",
+    "gcc": "/usr/bin/gcc",
+    "dwp": "/usr/bin/dwp",
+    "gcov": "/usr/bin/gcov",
+    "nm": "/usr/bin/nm",
+    "objcopy": "/usr/bin/objcopy",
+    "objdump": "/usr/bin/objdump",
+    "strip": "/usr/bin/strip",
+}
+
+filegroup(name = "exec-platform-provided")
 
 cc_toolchain_config(
     name = "config/centos/6",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-4.4.7",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.12",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_centos_6",
 )
 
 cc_toolchain(
     name = "cc/centos/6",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/centos/6",
     toolchain_identifier = "cc_centos_6",
 )
@@ -31,14 +52,10 @@ cc_toolchain(
 toolchain(
     name = "centos/6",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.12",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.12",
     ],
@@ -48,24 +65,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/centos/7",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-4.8.5",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.17",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_centos_7",
 )
 
 cc_toolchain(
     name = "cc/centos/7",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/centos/7",
     toolchain_identifier = "cc_centos_7",
 )
@@ -73,14 +96,10 @@ cc_toolchain(
 toolchain(
     name = "centos/7",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.17",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.17",
     ],
@@ -90,24 +109,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/rockylinux/8",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-8.5.0",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/8.5.0/include",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.28",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_rockylinux_8",
 )
 
 cc_toolchain(
     name = "cc/rockylinux/8",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/rockylinux/8",
     toolchain_identifier = "cc_rockylinux_8",
 )
@@ -115,14 +140,10 @@ cc_toolchain(
 toolchain(
     name = "rockylinux/8",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.28",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.28",
     ],
@@ -132,24 +153,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/rockylinux/9",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-11.3.1",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/11.3.1/include",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.34",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_rockylinux_9",
 )
 
 cc_toolchain(
     name = "cc/rockylinux/9",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/rockylinux/9",
     toolchain_identifier = "cc_rockylinux_9",
 )
@@ -157,14 +184,10 @@ cc_toolchain(
 toolchain(
     name = "rockylinux/9",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.34",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.34",
     ],
@@ -174,24 +197,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/fedora/37",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-12.3.1",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/12.3.1/include",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.36",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_fedora_37",
 )
 
 cc_toolchain(
     name = "cc/fedora/37",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/fedora/37",
     toolchain_identifier = "cc_fedora_37",
 )
@@ -199,14 +228,10 @@ cc_toolchain(
 toolchain(
     name = "fedora/37",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.36",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.36",
     ],
@@ -216,24 +241,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/fedora/38",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-13.1.1",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/lib/gcc/x86_64-redhat-linux/13.1.1/include",
+        "/usr/lib/gcc/x86_64-redhat-linux/13/include",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.37",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_fedora_38",
 )
 
 cc_toolchain(
     name = "cc/fedora/38",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/fedora/38",
     toolchain_identifier = "cc_fedora_38",
 )
@@ -241,14 +272,10 @@ cc_toolchain(
 toolchain(
     name = "fedora/38",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.37",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.37",
     ],
@@ -258,24 +285,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/debian/11",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-10.2.1",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/include/x86_64-linux-gnu",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.31",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_debian_11",
 )
 
 cc_toolchain(
     name = "cc/debian/11",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/debian/11",
     toolchain_identifier = "cc_debian_11",
 )
@@ -283,14 +316,10 @@ cc_toolchain(
 toolchain(
     name = "debian/11",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.31",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.31",
     ],
@@ -300,24 +329,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/debian/12",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-12.2.0",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/include/x86_64-linux-gnu",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.36",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_debian_12",
 )
 
 cc_toolchain(
     name = "cc/debian/12",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/debian/12",
     toolchain_identifier = "cc_debian_12",
 )
@@ -325,14 +360,10 @@ cc_toolchain(
 toolchain(
     name = "debian/12",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
@@ -342,24 +373,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/ubuntu/kenetic",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-12.2.0",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/include/x86_64-linux-gnu",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.36",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_ubuntu_kinetic",
 )
 
 cc_toolchain(
     name = "cc/ubuntu/kinetic",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/ubuntu/kenetic",
     toolchain_identifier = "cc_ubuntu_kinetic",
 )
@@ -367,14 +404,10 @@ cc_toolchain(
 toolchain(
     name = "ubuntu/kinetic",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
     ],
@@ -384,24 +417,30 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/ubuntu/lunar",
+    abi_libc_version = "local",
+    abi_version = "local",
+    compile_flags = [],
     compiler = "gcc-12.2.0",
-    includes = [
+    cpu = "k8",
+    cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/include/x86_64-linux-gnu",
     ],
+    host_system_name = "linux-gnu",
     target_libc = "glibc-2.37",
+    target_system_name = "linux-gnu",
+    tool_paths = tool_paths,
     toolchain_identifier = "k8_ubuntu_lunar",
 )
 
 cc_toolchain(
     name = "cc/ubuntu/lunar",
-    all_files = ":none",
-    compiler_files = ":none",
-    dwp_files = ":none",
-    linker_files = ":none",
-    objcopy_files = ":none",
-    strip_files = ":none",
-    supports_param_files = 0,
+    all_files = ":exec-platform-provided",
+    compiler_files = ":exec-platform-provided",
+    dwp_files = ":exec-platform-provided",
+    linker_files = ":exec-platform-provided",
+    objcopy_files = ":exec-platform-provided",
+    strip_files = ":exec-platform-provided",
     toolchain_config = ":config/ubuntu/lunar",
     toolchain_identifier = "cc_ubuntu_lunar",
 )
@@ -409,14 +448,10 @@ cc_toolchain(
 toolchain(
     name = "ubuntu/lunar",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.37",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.37",
     ],
