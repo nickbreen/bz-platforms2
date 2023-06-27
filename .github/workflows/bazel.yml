@@ -20,6 +20,7 @@ jobs:
         context: executors/centos/6
         file: executors/centos/6/Containerfile
         tags: executors/centos:6
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -27,6 +28,7 @@ jobs:
         context: executors/centos/7
         file: executors/centos/7/Containerfile
         tags: executors/centos:7
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -34,6 +36,7 @@ jobs:
         context: executors/debian/11
         file: executors/debian/11/Containerfile
         tags: executors/debian:11
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -41,6 +44,7 @@ jobs:
         context: executors/debian/12
         file: executors/debian/12/Containerfile
         tags: executors/debian:12
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -48,6 +52,7 @@ jobs:
         context: executors/fedora/37
         file: executors/fedora/37/Containerfile
         tags: executors/fedora:37
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -55,6 +60,7 @@ jobs:
         context: executors/fedora/38
         file: executors/fedora/38/Containerfile
         tags: executors/fedora:38
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -62,6 +68,7 @@ jobs:
         context: executors/rockylinux/8
         file: executors/rockylinux/8/Containerfile
         tags: executors/rockylinux:8
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -69,6 +76,7 @@ jobs:
         context: executors/rockylinux/9
         file: executors/rockylinux/9/Containerfile
         tags: executors/rockylinux:9
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -76,6 +84,7 @@ jobs:
         context: executors/ubuntu/kinetic
         file: executors/ubuntu/kinetic/Containerfile
         tags: executors/ubuntu:kinetic
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: docker/build-push-action@v4
@@ -83,6 +92,7 @@ jobs:
         context: executors/ubuntu/lunar
         file: executors/ubuntu/lunar/Containerfile
         tags: executors/ubuntu:lunar
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - uses: actions/cache@v3
