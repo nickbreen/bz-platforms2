@@ -9,22 +9,11 @@ rpmbuild_toolchain(
 toolchain(
     name = "redhat",
     exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
     ],
     target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
         "//platforms/family:redhat",
     ],
     toolchain = ":rpmbuild",
-    toolchain_type = "@rules_pkg//toolchains/rpm:rpmbuild_toolchain_type",
-)
-
-# Allow an "incompatible" toolchain to be resolved so that it can be detected as incompatible
-toolchain(
-    name = "no-rpmbuild",
-    toolchain = "@rules_pkg//toolchains/rpm:no_rpmbuild",
     toolchain_type = "@rules_pkg//toolchains/rpm:rpmbuild_toolchain_type",
 )

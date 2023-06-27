@@ -33,7 +33,7 @@ genrule(
 pkg_files(
     name = "opt/hello",
     srcs = [":hello"],
-    prefix = "/opt/hello",
+    prefix = "/usr/local/bin",
 )
 
 pkg_tar(
