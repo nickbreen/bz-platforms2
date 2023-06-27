@@ -25,7 +25,7 @@ jobs:
       with:
         path: ~/.cache/bazel.disk
         key: bazel
-    - run: mkdir ~/.cache/bazel.disk
+    - run: mkdir -p ~/.cache/bazel.disk
     - name: Bazel Build
       run: bazel build --disk_cache=~/.cache/bazel.disk //:hellos //:check-hellos //:tars //:check-tars //:rpms //:debs
 
