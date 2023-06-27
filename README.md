@@ -1,4 +1,4 @@
-![](https://github.com/nickbreen/bz-platforms2/actions/workflows/bazel.yml/badge.svg)
+[![Bazel CI](https://github.com/nickbreen/bz-platforms2/actions/workflows/bazel.yml/badge.svg)](https://github.com/nickbreen/bz-platforms2/actions/workflows/bazel.yml)
 
 Assuming you have `bazelisk` on your path as `bazel` and a recent `docker`:
 
