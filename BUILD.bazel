@@ -1,7 +1,7 @@
 load("@rules_pkg//pkg:rpm.bzl", "pkg_rpm")
 load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load(":defs.bzl", "platforms")
 load("@rules_cc//cc:defs.bzl", "cc_binary")
 
@@ -16,9 +16,9 @@ platforms(
 )
 
 genrule(
-    name = "run-hellos",
+    name = "check-hellos",
     srcs = [":hellos"],
-    outs = ["out.txt"],
+    outs = ["hellos.txt"],
     cmd = """
     set $(SRCS)
     objdump -T "$$@"
@@ -33,6 +33,9 @@ genrule(
 pkg_files(
     name = "opt/hello",
     srcs = [":hello"],
+    attributes = pkg_attributes(
+        mode = "0755",
+    ),
     prefix = "/usr/local/bin",
 )
 
@@ -49,6 +52,21 @@ pkg_tar(
 platforms(
     name = "tars",
     actual = ":tar",
+)
+
+genrule(
+    name = "check-tars",
+    srcs = [":tars"],
+    outs = ["tars.txt"],
+    cmd = """
+    set $(SRCS)
+    for hello
+    do
+        tar xf $$hello -C $(RULEDIR)
+        echo -ne "$$hello\t"
+        $(RULEDIR)/usr/local/bin/hello
+    done | tee $@
+    """,
 )
 
 pkg_rpm(

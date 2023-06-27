@@ -22,4 +22,10 @@ jobs:
       run: ./images.sh
     - name: Bazel Build hellos
       run: bazel build //:hellos
+    - name: Bazel Build check hellos
+      run: bazel build //:check-hellos
+    - name: Bazel Build tars
+      run: bazel build //:tars
+    - name: Bazel Build check tars
+      run: bazel build //:check-tars
 
