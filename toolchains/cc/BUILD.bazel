@@ -17,7 +17,49 @@ tool_paths = {
     "strip": "/usr/bin/strip",
 }
 
-common_compile_flags = ["-std=c99"]
+compile_flags = [
+    "-std=c99",  # implicit return 0 from main
+    # Yoinked from @local_config_cc on Ubuntu/lunar
+    "-fstack-protector",
+    "-Wall",
+    "-Wunused-but-set-parameter",
+    "-Wno-free-nonheap-object",
+    "-fno-omit-frame-pointer",
+]
+
+# Yoinked from @local_config_cc on Ubuntu/lunar
+opt_compile_flags = [
+    "-g0",
+    "-O2",
+    "-D_FORTIFY_SOURCE=1",
+    "-DNDEBUG",
+    "-ffunction-sections",
+    "-fdata-sections",
+]
+
+# Yoinked from @local_config_cc on Ubuntu/lunar
+dbg_compile_flags = ["-g"]
+
+# Yoinked from @local_config_cc on Ubuntu/lunar
+cxx_flags = ["-std=c++0x"]
+
+# Yoinked from @local_config_cc on Ubuntu/lunar
+link_flags = [
+    "-fuse-ld=gold",
+    "-Wl,-no-as-needed",
+    "-Wl,-z,relro,-z,now",
+    "-B/usr/bin",
+    "-pass-exit-codes",
+]
+
+link_libs = [
+    # Yoinked from @local_config_cc on Ubuntu/lunar
+    #    "-lstdc++",
+    #    "-lm",
+]
+
+# Yoinked from @local_config_cc on Ubuntu/lunar
+opt_link_flags = ["-Wl,--gc-sections"]
 
 filegroup(name = "exec-platform-provided")
 
@@ -25,7 +67,7 @@ cc_toolchain_config(
     name = "config/centos/6",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-4.4.7",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -33,7 +75,13 @@ cc_toolchain_config(
         "/usr/lib/gcc/x86_64-redhat-linux/4.4.4/include",
         "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.12",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -74,7 +122,7 @@ cc_toolchain_config(
     name = "config/centos/7",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-4.8.5",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -82,7 +130,13 @@ cc_toolchain_config(
         "/usr/lib/gcc/x86_64-redhat-linux/4.8.2/include",
         "/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.17",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -123,14 +177,20 @@ cc_toolchain_config(
     name = "config/rockylinux/8",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-8.5.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/8/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.28",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -171,14 +231,20 @@ cc_toolchain_config(
     name = "config/rockylinux/9",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-11.3.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/11/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.34",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -219,14 +285,20 @@ cc_toolchain_config(
     name = "config/fedora/37",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-12.3.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/12/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.36",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -267,14 +339,20 @@ cc_toolchain_config(
     name = "config/fedora/38",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-13.1.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-redhat-linux/13/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.37",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -315,14 +393,20 @@ cc_toolchain_config(
     name = "config/debian/11",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-10.2.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-linux-gnu/10/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.31",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -363,14 +447,20 @@ cc_toolchain_config(
     name = "config/debian/12",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-linux-gnu/12/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.36",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -411,14 +501,20 @@ cc_toolchain_config(
     name = "config/ubuntu/kenetic",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-linux-gnu/12/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.36",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
@@ -459,14 +555,20 @@ cc_toolchain_config(
     name = "config/ubuntu/lunar",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = common_compile_flags,
+    compile_flags = compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-linux-gnu/12/include",
     ],
+    cxx_flags = cxx_flags,
+    dbg_compile_flags = dbg_compile_flags,
     host_system_name = "linux-gnu",
+    link_flags = link_flags,
+    link_libs = link_libs,
+    opt_compile_flags = opt_compile_flags,
+    opt_link_flags = opt_link_flags,
     target_libc = "glibc-2.37",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
