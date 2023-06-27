@@ -20,6 +20,6 @@ build --incompatible_enable_cc_toolchain_resolution  # appears to be on by defau
 build --config=docker
 
 #build --toolchain_resolution_debug @bazel_tools//tools/cpp:toolchain_type
-build --toolchain_resolution_debug @rules_pkg.*//toolchains/rpm:rpmbuild_toolchain_type
+#build --toolchain_resolution_debug @rules_pkg.*//toolchains/rpm:rpmbuild_toolchain_type
 
 build --experimental_platforms_api

@@ -12,20 +12,17 @@ def _platforms_transition(settings, attr):
     TODO: figure that out; at least be able to explain why.
     """
 
-    split_keys = sets.to_list(sets.make([label.name for label in attr.target_platforms + attr.exec_platforms + attr.extra_toolchains]))
+    split_keys = sets.to_list(sets.make([label.name for label in attr.target_platforms + attr.exec_platforms]))
 
     splits = {split_key: {
         "//command_line_option:platforms": [],
         "//command_line_option:extra_execution_platforms": [],
-        "//command_line_option:extra_toolchains": [],
     } for split_key in split_keys}
 
     for label in attr.target_platforms:
         splits[label.name]["//command_line_option:platforms"] += ["%s" % label]
     for label in attr.exec_platforms:
         splits[label.name]["//command_line_option:extra_execution_platforms"] += ["%s" % label]
-    for label in attr.extra_toolchains:
-        splits[label.name]["//command_line_option:extra_toolchains"] += ["%s" % label]
 
     return splits
 
@@ -35,7 +32,6 @@ platforms_transition = transition(
     outputs = [
         "//command_line_option:platforms",
         "//command_line_option:extra_execution_platforms",
-        "//command_line_option:extra_toolchains",
     ],
 )
 
@@ -57,7 +53,6 @@ platforms = rule(
         "actual": attr.label(mandatory = True, cfg = platforms_transition),
         "target_platforms": attr.label_list(providers = [platform_common.PlatformInfo]),
         "exec_platforms": attr.label_list(providers = [platform_common.PlatformInfo]),
-        "extra_toolchains": attr.label_list(),  # not providers = [platform_common.ToolchainInfo]
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
