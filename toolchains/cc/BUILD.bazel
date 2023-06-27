@@ -17,13 +17,15 @@ tool_paths = {
     "strip": "/usr/bin/strip",
 }
 
+common_compile_flags = ["-std=c99"]
+
 filegroup(name = "exec-platform-provided")
 
 cc_toolchain_config(
     name = "config/centos/6",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-4.4.7",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -72,7 +74,7 @@ cc_toolchain_config(
     name = "config/centos/7",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-4.8.5",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -121,7 +123,7 @@ cc_toolchain_config(
     name = "config/rockylinux/8",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-8.5.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -169,7 +171,7 @@ cc_toolchain_config(
     name = "config/rockylinux/9",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-11.3.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -217,7 +219,7 @@ cc_toolchain_config(
     name = "config/fedora/37",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-12.3.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -265,7 +267,7 @@ cc_toolchain_config(
     name = "config/fedora/38",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-13.1.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -313,7 +315,7 @@ cc_toolchain_config(
     name = "config/debian/11",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-10.2.1",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -361,7 +363,7 @@ cc_toolchain_config(
     name = "config/debian/12",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -409,7 +411,7 @@ cc_toolchain_config(
     name = "config/ubuntu/kenetic",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
@@ -457,7 +459,7 @@ cc_toolchain_config(
     name = "config/ubuntu/lunar",
     abi_libc_version = "local",
     abi_version = "local",
-    compile_flags = [],
+    compile_flags = common_compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
     cxx_builtin_include_directories = [

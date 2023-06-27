@@ -15,6 +15,21 @@ platforms(
     actual = ":hello",
 )
 
+genrule(
+    name = "run-hellos",
+    srcs = [":hellos"],
+    outs = ["out.txt"],
+    cmd = """
+    set $(SRCS)
+    objdump -T "$$@"
+    for hello
+    do
+        echo -ne "$$hello\t"
+        $$hello || echo "Non-zero exit $$?"
+    done | tee $@
+    """,
+)
+
 pkg_files(
     name = "opt/hello",
     srcs = [":hello"],
@@ -25,10 +40,15 @@ pkg_tar(
     name = "tar",
     srcs = [":opt/hello"],
     target_compatible_with = select({
-        "//platforms/family:redhat": [],
-        "//platforms/family:debian": [],
+        "//platforms/family:redhat": ["//platforms/family:redhat"],
+        "//platforms/family:debian": ["//platforms/family:debian"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
+)
+
+platforms(
+    name = "tars",
+    actual = ":tar",
 )
 
 pkg_rpm(
@@ -45,6 +65,11 @@ pkg_rpm(
     version = "0",
 )
 
+platforms(
+    name = "rpms",
+    actual = ":rpm",
+)
+
 pkg_deb(
     name = "deb",
     data = ":tar",
@@ -55,16 +80,6 @@ pkg_deb(
     package = "hello",
     target_compatible_with = ["//platforms/family:debian"],
     version = "0",
-)
-
-platforms(
-    name = "tars",
-    actual = ":tar",
-)
-
-platforms(
-    name = "rpms",
-    actual = ":rpm",
 )
 
 platforms(
