@@ -2,18 +2,20 @@
 load("@rules_pkg//toolchains/rpm:rpmbuild.bzl", "rpmbuild_toolchain")
 
 rpmbuild_toolchain(
-    name = "rpmbuild",
+    name = "default",
     path = "/usr/bin/rpmbuild",
 )
 
 toolchain(
-    name = "redhat",
+    name = "rpmbuild",
     exec_compatible_with = [
         "//platforms/family:redhat",
     ],
     target_compatible_with = [
         "//platforms/family:redhat",
     ],
-    toolchain = ":rpmbuild",
+    toolchain = ":default",
     toolchain_type = "@rules_pkg//toolchains/rpm:rpmbuild_toolchain_type",
 )
+
+exports_files(["template.spec.tpl"])

@@ -28,4 +28,8 @@ jobs:
       run: bazel build //:tars
     - name: Bazel Build check tars
       run: bazel build //:check-tars
+    - name: Bazel Build rpms
+      run: bazel build //:rpms
+    - name: Bazel Build debs
+      run: bazel build //:debs
 

@@ -1,4 +1,4 @@
 register_toolchains(
-    "//toolchains/python:python",
-    "//toolchains/rpmbuild:redhat",
+    "//toolchains/python",
+    "//toolchains/rpmbuild",
 )

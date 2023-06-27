@@ -13,6 +13,42 @@ cc_binary(
 platforms(
     name = "hellos",
     actual = ":hello",
+    exec_platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
+    extra_toolchains = [
+        "//toolchains/cc:centos/6",
+        "//toolchains/cc:centos/7",
+        "//toolchains/cc:debian/11",
+        "//toolchains/cc:debian/12",
+        "//toolchains/cc:fedora/37",
+        "//toolchains/cc:fedora/38",
+        "//toolchains/cc:rockylinux/8",
+        "//toolchains/cc:rockylinux/9",
+        "//toolchains/cc:ubuntu/kinetic",
+        "//toolchains/cc:ubuntu/lunar",
+    ],
+    target_platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
 )
 
 genrule(
@@ -31,27 +67,58 @@ genrule(
 )
 
 pkg_files(
-    name = "opt/hello",
+    name = "pkg/hello",
     srcs = [":hello"],
     attributes = pkg_attributes(
-        mode = "0755",
+        mode = "0555",
     ),
-    prefix = "/usr/local/bin",
+    prefix = "usr/local/bin",
 )
 
 pkg_tar(
     name = "tar",
-    srcs = [":opt/hello"],
-    target_compatible_with = select({
-        "//platforms/family:redhat": ["//platforms/family:redhat"],
-        "//platforms/family:debian": ["//platforms/family:debian"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    srcs = [":pkg/hello"],
 )
 
 platforms(
     name = "tars",
     actual = ":tar",
+    exec_platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
+    extra_toolchains = [
+        "//toolchains/cc:centos/6",
+        "//toolchains/cc:centos/7",
+        "//toolchains/cc:debian/11",
+        "//toolchains/cc:debian/12",
+        "//toolchains/cc:fedora/37",
+        "//toolchains/cc:fedora/38",
+        "//toolchains/cc:rockylinux/8",
+        "//toolchains/cc:rockylinux/9",
+        "//toolchains/cc:ubuntu/kinetic",
+        "//toolchains/cc:ubuntu/lunar",
+    ],
+    target_platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
 )
 
 genrule(
@@ -72,20 +139,44 @@ genrule(
 pkg_rpm(
     name = "rpm",
     package_name = "hello",
-    srcs = [":opt/hello"],
+    srcs = [":pkg/hello"],
+    architecture = "x86_64",
     description = "Hello GLIBC",
-    exec_compatible_with = ["//platforms/family:redhat"],
     license = "MIT",
-    release = "0",
+    release = "0",  # redhat family will need a el6/7/8/9 constraint to switch this on
     requires = ["glibc"],
+    spec_template = "//toolchains/rpmbuild:template.spec.tpl",  # because RPM's suck
     summary = "Hello GLIBC",
-    target_compatible_with = ["//platforms/family:redhat"],
     version = "0",
 )
 
 platforms(
     name = "rpms",
     actual = ":rpm",
+    exec_platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+    ],
+    extra_toolchains = [
+        "//toolchains/cc:centos/6",
+        "//toolchains/cc:centos/7",
+        "//toolchains/cc:fedora/37",
+        "//toolchains/cc:fedora/38",
+        "//toolchains/cc:rockylinux/8",
+        "//toolchains/cc:rockylinux/9",
+    ],
+    target_platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+    ],
 )
 
 pkg_deb(
@@ -93,14 +184,30 @@ pkg_deb(
     data = ":tar",
     depends = ["libc6"],
     description = "Hello GLIBC",
-    exec_compatible_with = ["//platforms/family:debian"],
     maintainer = "glibc@example.com",
     package = "hello",
-    target_compatible_with = ["//platforms/family:debian"],
     version = "0",
 )
 
 platforms(
     name = "debs",
     actual = ":deb",
+    exec_platforms = [
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
+    extra_toolchains = [
+        "//toolchains/cc:debian/11",
+        "//toolchains/cc:debian/12",
+        "//toolchains/cc:ubuntu/kinetic",
+        "//toolchains/cc:ubuntu/lunar",
+    ],
+    target_platforms = [
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
 )
