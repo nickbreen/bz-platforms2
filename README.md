@@ -1,3 +1,10 @@
+Assuming you have `bazelisk` on your path as `bazel` and a recent `docker`:
+
+    docker buildx bake
+    bazel build //:hellos //:check-hellos //:tars //:check-tars //:rpms //:debs
+
+---
+
 We want to target platforms with varied GLIBC versions.
 
     OS             Family PKG GLIBC Dependency                  
