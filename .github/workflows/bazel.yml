@@ -21,6 +21,12 @@ jobs:
         set: |
           *.cache-from=type=gha
           *.cache-to=type=gha,mode=max
+    - uses: docker/bake-action@v3
+      with:
+        push: true
+        set: |
+          *.cache-from=type=gha
+          *.cache-to=type=gha,mode=max
           centos-6.tags=ghcr.io/${{github.repository}}/centos:6
           centos-7.tags=ghcr.io/${{github.repository}}/centos:7
           debian-11.tags=ghcr.io/${{github.repository}}/debian:11
