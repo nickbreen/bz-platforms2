@@ -1,4 +1,5 @@
 FROM centos:7
 
-RUN yum install --assumeyes rpm-build python3 glibc-devel libstdc++-devel gcc && yum clean all
+RUN --mount=type=cache,sharing=private,target=/var/cache/yum \
+    yum install --setopt=keepcache=1 --assumeyes rpm-build python3 glibc-devel libstdc++-devel gcc
 RUN getent group 100 | { IFS=: read group _ gid; userdel games; groupdel $group; }
