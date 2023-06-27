@@ -23,8 +23,8 @@ jobs:
           *.cache-to=type=gha,mode=max
     - uses: actions/cache@v3
       with:
-        path: ~/.cache/bazel
+        path: /var/cache/bazel
         key: bazel
     - name: Bazel Build
-      run: bazel build //:hellos //:check-hellos //:tars //:check-tars //:rpms //:debs
+      run: bazel build --disk_cache=/var/cache/bazel //:hellos //:check-hellos //:tars //:check-tars //:rpms //:debs
 
