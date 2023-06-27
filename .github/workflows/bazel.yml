@@ -18,8 +18,9 @@ jobs:
     - uses: docker/bake-action@v3
       with:
         load: true
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        set: |
+          *.cache-from=type=gha
+          *.cache-to=type=gha,mode=max
     - uses: actions/cache@v3
       with:
         path: ~/.cache/bazel
