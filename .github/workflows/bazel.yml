@@ -29,6 +29,8 @@ jobs:
       run: bazel build --disk_cache=~/.cache/bazel.disk hellos tars check-tars rpms debs
     - name: Bazel Test
       run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all hellos-test hello-test-suite
+    - name: Bazel Shutdown
+      run: bazel shutdown
     - uses: dorny/test-reporter@v1
       if: success() || failure()
       with:
