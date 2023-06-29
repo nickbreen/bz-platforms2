@@ -2,3 +2,19 @@ bazel_dep(name = "rules_pkg", version = "0.9.1")
 bazel_dep(name = "rules_python", version = "0.23.1")
 bazel_dep(name = "rules_cc", version = "0.0.6")
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
+
+register_toolchains(
+    "//toolchains/python",
+    "//toolchains/rpmbuild",
+    "@rules_pkg//toolchains/rpm:rpmbuild_missing_toolchain",
+    "//toolchains/cc:centos/6",
+    "//toolchains/cc:centos/7",
+    "//toolchains/cc:debian/11",
+    "//toolchains/cc:debian/12",
+    "//toolchains/cc:fedora/37",
+    "//toolchains/cc:fedora/38",
+    "//toolchains/cc:rockylinux/8",
+    "//toolchains/cc:rockylinux/9",
+    "//toolchains/cc:ubuntu/kinetic",
+    "//toolchains/cc:ubuntu/lunar",
+)

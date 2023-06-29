@@ -74,10 +74,25 @@ platforms = rule(
     },
 )
 
+TestArgInfo = provider(fields = ["args", "data"])
+
+def _test_arg_info_aspect(target, ctx):
+    data = getattr(ctx.rule.attr, "data", [])
+    args = getattr(ctx.rule.attr, "args", [])
+    args = [ctx.expand_location(arg, data) for arg in args]
+    return [
+        TestArgInfo(args = args, data = getattr(ctx.rule.files, "data", [])),
+    ]
+
+test_arg_info_aspect = aspect(implementation = _test_arg_info_aspect)
+
 def _platform_test(ctx):
     executable = ctx.actions.declare_file(ctx.label.name)
-    ctx.actions.symlink(output = executable, target_file = ctx.executable.test)
-    return [DefaultInfo(executable = executable, runfiles = ctx.runfiles(files = ctx.files.test))]
+    ctx.actions.expand_template(template = ctx.file._tpl, output = executable, is_executable = True, substitutions = {
+        "${test?}": ctx.executable.test.short_path,
+        "${args?}": " ".join(ctx.attr.test[TestArgInfo].args),
+    })
+    return [DefaultInfo(executable = executable, runfiles = ctx.runfiles(files = ctx.files.test, transitive_files = depset(ctx.attr.test[TestArgInfo].data)))]
 
 platform_test = rule(
     implementation = _platform_test,
@@ -86,8 +101,27 @@ platform_test = rule(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
         "platform": attr.label(mandatory = True, providers = [platform_common.PlatformInfo]),
-        "test": attr.label(mandatory = True, cfg = "target", executable = True),
+        "test": attr.label(mandatory = True, cfg = "target", executable = True, aspects = [test_arg_info_aspect]),
+        "_tpl": attr.label(default = "//:platform.test.sh.tpl", allow_single_file = True),
     },
     cfg = platform_transition,
     test = True,
 )
+
+def platforms_test(name, platforms = [], test = None, **kwargs):
+    tests = []
+    test = Label(test)
+    for i, p in enumerate(platforms):
+        pl = Label(p)
+        test_name = "%s_%d_%s" % (test.name, i, pl.name)
+        tests += [test_name]
+        platform_test(
+            name = test_name,
+            platform = pl,
+            test = test,
+        )
+    native.test_suite(
+        name = name,
+        tests = tests,
+        **kwargs
+    )

@@ -1,9 +1,8 @@
 #!/bin/bash
 
-set -xeuo pipefail
+set -xeu
 
 for hello
 do
-  test -x $hello  # expected to be executable
-  ($hello)  # execute in a subshell why not
+  test -x $hello && (exec $hello)  # execute in a subshell why not
 done

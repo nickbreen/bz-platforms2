@@ -28,5 +28,5 @@ jobs:
     - name: Bazel Build
       run: bazel build --disk_cache=~/.cache/bazel.disk hellos tars check-tars rpms debs
     - name: Bazel Test
-      run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all hellos-test
+      run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all hellos-test hello-test-suite
 
