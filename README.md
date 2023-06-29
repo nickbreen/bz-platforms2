@@ -63,4 +63,6 @@ References:
 - https://github.com/duarten/rust-bazel-cross
 - https://github.com/wheybags/glibc_version_header
 - https://github.com/fmeum/rules_jni
+- https://github.com/aherrmann/bazel-transitions-demo
+- https://github.com/bazelbuild/examples
 

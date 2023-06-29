@@ -35,6 +35,21 @@ platforms_transition = transition(
     ],
 )
 
+def _platform_transition(settings, attr):
+    return {
+        "//command_line_option:platforms": ["%s" % attr.platform],
+        "//command_line_option:extra_execution_platforms": ["%s" % attr.platform],
+    }
+
+platform_transition = transition(
+    implementation = _platform_transition,
+    inputs = [],
+    outputs = [
+        "//command_line_option:platforms",
+        "//command_line_option:extra_execution_platforms",
+    ],
+)
+
 def _platforms(ctx):
     """Collect files for each platform."""
     ins_and_outs = {
@@ -57,4 +72,22 @@ platforms = rule(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
     },
+)
+
+def _platform_test(ctx):
+    executable = ctx.actions.declare_file(ctx.label.name)
+    ctx.actions.symlink(output = executable, target_file = ctx.executable.test)
+    return [DefaultInfo(executable = executable, runfiles = ctx.runfiles(files = ctx.files.test))]
+
+platform_test = rule(
+    implementation = _platform_test,
+    attrs = {
+        "_allowlist_function_transition": attr.label(
+            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
+        ),
+        "platform": attr.label(mandatory = True, providers = [platform_common.PlatformInfo]),
+        "test": attr.label(mandatory = True, cfg = "target", executable = True),
+    },
+    cfg = platform_transition,
+    test = True,
 )
