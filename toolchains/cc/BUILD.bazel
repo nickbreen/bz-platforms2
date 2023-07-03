@@ -1,9 +1,14 @@
-package(default_visibility = ["//visibility:public"])
-
-# C toolchains - vary gcc/glibc versions and include paths by platform
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("@bazel_tools//tools/cpp:unix_cc_toolchain_config.bzl", "cc_toolchain_config")
 
+# The bazel documentation for configuration of C toolchains is voluminous but
+# general. Most examples have "local" or "unknown" set for several attributes
+# without explanation. The following cc_toolchain_config and cc_toolchain rules
+# are possibly over-specified and could be collapsed somewhat. Some values are
+# apparently mandatory yet ignored (e.g. host_system_name).
+
+# All of the following common chunks have been yoinked from @local_config_cc
+# on Ubuntu/lunar except where commented.
 tool_paths = {
     "ar": "/usr/bin/ar",
     "ld": "/usr/bin/ld",
@@ -21,7 +26,6 @@ tool_paths = {
 
 compile_flags = [
     "-std=c99",  # implicit return 0 from main
-    # Yoinked from @local_config_cc on Ubuntu/lunar
     "-fstack-protector",
     "-Wall",
     "-Wunused-but-set-parameter",
@@ -29,7 +33,6 @@ compile_flags = [
     "-fno-omit-frame-pointer",
 ]
 
-# Yoinked from @local_config_cc on Ubuntu/lunar
 opt_compile_flags = [
     "-g0",
     "-O2",
@@ -39,13 +42,10 @@ opt_compile_flags = [
     "-fdata-sections",
 ]
 
-# Yoinked from @local_config_cc on Ubuntu/lunar
 dbg_compile_flags = ["-g"]
 
-# Yoinked from @local_config_cc on Ubuntu/lunar
 cxx_flags = ["-std=c++0x"]
 
-# Yoinked from @local_config_cc on Ubuntu/lunar
 link_flags = [
     "-fuse-ld=gold",
     "-Wl,-no-as-needed",
@@ -55,20 +55,23 @@ link_flags = [
 ]
 
 link_libs = [
-    # Yoinked from @local_config_cc on Ubuntu/lunar
     #    "-lstdc++",
     #    "-lm",
 ]
 
-# Yoinked from @local_config_cc on Ubuntu/lunar
 opt_link_flags = ["-Wl,--gc-sections"]
 
+# None of these toolchains are hermetic as far as bazel is concerned, so we need
+# and empty set of files to provide to the cc_toolchain rule.
 filegroup(name = "exec-platform-provided")
 
+# C toolchains - vary gcc/glibc versions and include paths by platform.
+# We need to define each platform's specific combination of GNU C version and
+# GNU libc version.
 cc_toolchain_config(
     name = "config/centos/6",
     abi_libc_version = "local",
-    abi_version = "local",
+    abi_version = "glibc-2.12",
     compile_flags = compile_flags,
     compiler = "gcc-4.4.7",
     cpu = "k8",
@@ -123,7 +126,7 @@ toolchain(
 cc_toolchain_config(
     name = "config/centos/7",
     abi_libc_version = "local",
-    abi_version = "local",
+    abi_version = "glibc-2.17",
     compile_flags = compile_flags,
     compiler = "gcc-4.8.5",
     cpu = "k8",
@@ -177,8 +180,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/rockylinux/8",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.28",
+    abi_version = "gcc-8.5.0",
     compile_flags = compile_flags,
     compiler = "gcc-8.5.0",
     cpu = "k8",
@@ -231,8 +234,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/rockylinux/9",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.34",
+    abi_version = "gcc-11.3.1",
     compile_flags = compile_flags,
     compiler = "gcc-11.3.1",
     cpu = "k8",
@@ -285,8 +288,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/fedora/37",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.36",
+    abi_version = "gcc-12.3.1",
     compile_flags = compile_flags,
     compiler = "gcc-12.3.1",
     cpu = "k8",
@@ -339,8 +342,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/fedora/38",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.37",
+    abi_version = "gcc-13.1.1",
     compile_flags = compile_flags,
     compiler = "gcc-13.1.1",
     cpu = "k8",
@@ -393,8 +396,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/debian/11",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.31",
+    abi_version = "gcc-10.2.1",
     compile_flags = compile_flags,
     compiler = "gcc-10.2.1",
     cpu = "k8",
@@ -447,8 +450,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/debian/12",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.36",
+    abi_version = "gcc-12.2.0",
     compile_flags = compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
@@ -501,8 +504,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/ubuntu/kenetic",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.36",
+    abi_version = "gcc-12.2.0",
     compile_flags = compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",
@@ -555,8 +558,8 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/ubuntu/lunar",
-    abi_libc_version = "local",
-    abi_version = "local",
+    abi_libc_version = "glibc-2.37",
+    abi_version = "gcc-12.2.0",
     compile_flags = compile_flags,
     compiler = "gcc-12.2.0",
     cpu = "k8",

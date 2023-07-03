@@ -5,11 +5,22 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load(":defs.bzl", "platforms", "platforms_test")
 load("@rules_cc//cc:defs.bzl", "cc_binary")
 
+# Not built directly, but if done so will fail to build as CppCompile etcetera
+# are configured to *only* build in a container.
+# This *can* be built directly in an arbitrary container by overriding the
+# strategy for CppCompile CppLink CcStrip back to their default values. E.g.
+#    --strategy=CppCompile=remote,worker,sandboxed,local
+#    --strategy=CppLink=remote,worker,sandboxed,local
+#    --strategy=CcStrip=remote,worker,sandboxed,local
 cc_binary(
     name = "hello",
     srcs = ["hello.c"],
 )
 
+# Expand :hello to build for (target) and build on (exec) the
+# specified platforms.
+# It's probably not necessary to have both lists (and instead collapse down to
+# just platforms = [] and it stops it looking like the builtin attributes).
 platforms(
     name = "hellos",
     actual = ":hello",
@@ -39,7 +50,7 @@ platforms(
     ],
 )
 
-# Will execute on the host and test all executables
+# Will execute all binaries on the host platform.
 sh_test(
     name = "hellos-test",
     srcs = ["hello.test.sh"],
@@ -47,15 +58,7 @@ sh_test(
     data = [":hellos"],
 )
 
-pkg_files(
-    name = "pkg/hello",
-    srcs = [":hello"],
-    attributes = pkg_attributes(
-        mode = "0555",
-    ),
-    prefix = "usr/local/bin",
-)
-
+# Not executed directly, but if done so will fail to build :hello as above.
 sh_test(
     name = "hello-test",
     srcs = ["hello.test.sh"],
@@ -63,6 +66,9 @@ sh_test(
     data = [":hello"],
 )
 
+# Expand :hello-test to execute on all listed platforms. The platform is
+# propagated from the :hello-test to :hello so that it will execute with the
+# binary built for the matching platform.
 platforms_test(
     name = "hello-test-suite",
     platforms = [
@@ -80,11 +86,25 @@ platforms_test(
     test = ":hello-test",
 )
 
+pkg_files(
+    name = "pkg/hello",
+    srcs = [":hello"],
+    attributes = pkg_attributes(
+        mode = "0555",
+    ),
+    prefix = "usr/local/bin",
+)
+
+# Not built directly.
 pkg_tar(
     name = "tar",
     srcs = [":pkg/hello"],
 )
 
+# Expand :tar to build for all platforms. the MakeTar action does *not* have its
+# strategy set to docker, so while it will execute with the default strategies:
+#     remote,worker,sandboxed,local
+# It will build for each platform and package the matching :hello binary.
 platforms(
     name = "tars",
     actual = ":tar",
@@ -114,6 +134,7 @@ platforms(
     ],
 )
 
+# Extract each platform's archive and execute its binary on the host platform.
 genrule(
     name = "check-tars",
     srcs = [":tars"],
@@ -129,6 +150,8 @@ genrule(
     """,
 )
 
+# Not built directly. It cannot build on the host platform as we have not
+# defined an rpm toolchain for the host platform.
 pkg_rpm(
     name = "rpm",
     package_name = "hello",
@@ -143,6 +166,9 @@ pkg_rpm(
     version = "0",
 )
 
+# Expand :rpm to build for all specified platforms on a matching platform. The
+# MakeRpm action has its strategy set to docker and will use the container image
+# defined on the platform.
 platforms(
     name = "rpms",
     actual = ":rpm",
@@ -164,6 +190,9 @@ platforms(
     ],
 )
 
+# Not built directly, however there are no special toolchains required for debs.
+# It cannot build on the host as :hello is still required to be built for a
+# specific platform.
 pkg_deb(
     name = "deb",
     data = ":tar",
@@ -174,6 +203,8 @@ pkg_deb(
     version = "0",
 )
 
+# Expand :deb to build for each platform. While :deb does not need an execution
+# platform one of its dependencies does (:hello) so we must define them here.
 platforms(
     name = "debs",
     actual = ":deb",

@@ -46,9 +46,15 @@ By OS/Family/Packaging:
 - DEB
 - TGZ
 
+We could reduce the compilations down to GNU libc 2.12 and 2.34 as the two
+lowest common version and then package; this assumes that GNU libc is the only
+compilation dependency with some version issue. Consider adding OpenSSL too.
+Or python, or what-have-you. So...
+
 The idea will be to build `hello.c` for each of these platforms and
-automatically build it in a matching container. The extra nice part of this
-is that the host platform is entirely irrelevant.
+"automatically" build it in a matching container. The extra nice part of this
+is that the host platform is now entirely irrelevant. It will generate the 
+same outputs on MacOS, Linux, whatever.
 
 ---
 
