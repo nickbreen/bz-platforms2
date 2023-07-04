@@ -31,8 +31,10 @@ jobs:
       run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
     - name: Bazel Platform Tests
       run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
+    - name: Work around https://github.com/actions/upload-artifact/issues/92
+      run: echo "bazel_out=$(bazel info output_path)" >> $GITHUB_ENV
     - run: bazel shutdown
     - uses: actions/upload-artifact@v3
       with:
         name: test-results
-        path: bazel-out/*/testlogs/**/test.xml
+        path: ${{bazel_out}}/*/testlogs/**
