@@ -9,8 +9,7 @@ test --test_output=errors
 
 build:docker --experimental_docker_verbose
 build:docker --experimental_enable_docker_sandbox
-#build:docker --experimental_docker_use_customized_images  # We'll need to customise them ourselves
-#build:docker --spawn_strategy=docker,remote,sandboxed,local
+build:docker --experimental_docker_use_customized_images  # If enabled we'll need to customise the images ourselves
 build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker
 build:docker --experimental_docker_privileged  # For SELinux
 

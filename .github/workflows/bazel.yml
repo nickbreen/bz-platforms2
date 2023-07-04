@@ -26,8 +26,13 @@ jobs:
         path: ~/.cache/bazel.disk
         key: bazel
     - name: Bazel Build
-      run: bazel build --disk_cache=~/.cache/bazel.disk hellos tars check-tars rpms debs
-    - name: Bazel Test
-      run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all hellos-test hello-test-suite
-    - name: Bazel Shutdown
-      run: bazel shutdown
+      run: bazel build --disk_cache=~/.cache/bazel.disk hellos tars rpms debs
+    - name: Bazel Host Tests
+      run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
+    - name: Bazel Platform Tests
+      run: bazel test --disk_cache=~/.cache/bazel.disk --test_output=all --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
+    - run: bazel shutdown
+    - uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: bazel-out/*/testlogs/**/test.xml

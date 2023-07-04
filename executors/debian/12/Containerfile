@@ -6,3 +6,9 @@ RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     apt-get update && \
     apt-get install --assume-yes gcc libc6-dev python3
 RUN getent group 100 | { IFS=: read group _ gid; groupdel $group; }
+# Allow installation of DEB's in tests via sudo
+RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
+        export DEBIAN_FRONTEND=noninteractive && \
+        apt-get install --assume-yes sudo
+# Allow the bazelbuild user to install and erase DEB's when testing them
+RUN echo "bazelbuild ALL = NOPASSWD: /bin/dpkg *, /usr/bin/dpkg *" > /etc/sudoers.d/bazelbuild

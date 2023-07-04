@@ -52,7 +52,7 @@ platforms(
 
 # Will execute all binaries on the host platform.
 sh_test(
-    name = "hellos-test",
+    name = "host-hellos-test",
     srcs = ["hello.test.sh"],
     args = ["$(rootpaths :hellos)"],
     data = [":hellos"],
@@ -60,7 +60,7 @@ sh_test(
 
 # Not executed directly, but if done so will fail to build :hello as above.
 sh_test(
-    name = "hello-test",
+    name = "platform-hello-test",
     srcs = ["hello.test.sh"],
     args = ["$(rootpath :hello)"],
     data = [":hello"],
@@ -70,7 +70,7 @@ sh_test(
 # propagated from the :hello-test to :hello so that it will execute with the
 # binary built for the matching platform.
 platforms_test(
-    name = "hello-test-suite",
+    name = "platform-hello-test-suite",
     platforms = [
         "//platforms:centos/6",
         "//platforms:centos/7",
@@ -83,7 +83,7 @@ platforms_test(
         "//platforms:ubuntu/kinetic",
         "//platforms:ubuntu/lunar",
     ],
-    test = ":hello-test",
+    test = ":platform-hello-test",
 )
 
 pkg_files(
@@ -134,20 +134,40 @@ platforms(
     ],
 )
 
-# Extract each platform's archive and execute its binary on the host platform.
-genrule(
-    name = "check-tars",
-    srcs = [":tars"],
-    outs = ["tars.txt"],
-    cmd = """
-    set $(SRCS)
-    for hello
-    do
-        tar xf $$hello -C $(RULEDIR)
-        echo -ne "$$hello\t"
-        $(RULEDIR)/usr/local/bin/hello
-    done | tee $@
-    """,
+# Will extract and execute all binaries on the host platform.
+sh_test(
+    name = "host-tars-test",
+    srcs = ["pkg.test.sh"],
+    args = ["$(rootpaths :tars)"],
+    data = [":tars"],
+)
+
+# Not executed directly, but if done so will fail to build :hello as above.
+sh_test(
+    name = "platform-tar-test",
+    srcs = ["pkg.test.sh"],
+    args = ["$(rootpath :tar)"],
+    data = [":tar"],
+)
+
+# Expand :hello-test to execute on all listed platforms. The platform is
+# propagated from the :hello-test to :hello so that it will execute with the
+# binary built for the matching platform.
+platforms_test(
+    name = "platform-tar-test-suite",
+    platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
+    test = ":platform-tar-test",
 )
 
 # Not built directly. It cannot build on the host platform as we have not
@@ -190,6 +210,40 @@ platforms(
     ],
 )
 
+# Will install and execute all binaries on the host platform. Requires running
+# on a host with RPM Utils and manually specifying a --extra_execution_platform
+sh_test(
+    name = "host-rpms-test",
+    srcs = ["pkg.test.sh"],
+    args = ["$(rootpaths :rpms)"],
+    data = [":rpms"],
+    #exec_compatible_with = ["//platforms/family:redhat"],
+)
+
+# Not executed directly, but if done so will fail to build :hello as above.
+sh_test(
+    name = "platform-rpm-test",
+    srcs = ["pkg.test.sh"],
+    args = ["$(rootpaths :rpm)"],  # pkg_rpm produces two RPM files >:(
+    data = [":rpm"],
+)
+
+# Expand :hello-test to execute on all listed platforms. The platform is
+# propagated from the :hello-test to :hello so that it will execute with the
+# binary built for the matching platform.
+platforms_test(
+    name = "platform-rpm-test-suite",
+    platforms = [
+        "//platforms:centos/6",
+        "//platforms:centos/7",
+        "//platforms:fedora/37",
+        "//platforms:fedora/38",
+        "//platforms:rockylinux/8",
+        "//platforms:rockylinux/9",
+    ],
+    test = ":platform-rpm-test",
+)
+
 # Not built directly, however there are no special toolchains required for debs.
 # It cannot build on the host as :hello is still required to be built for a
 # specific platform.
@@ -220,4 +274,36 @@ platforms(
         "//platforms:ubuntu/kinetic",
         "//platforms:ubuntu/lunar",
     ],
+)
+
+# Will install and execute all binaries on the host platform. Requires running
+# on a host with RPM Utils and manually specifying a --extra_execution_platform
+sh_test(
+    name = "host-debs-test",
+    srcs = ["pkg.test.sh"],
+    args = ["$(rootpaths :debs)"],
+    data = [":debs"],
+    #exec_compatible_with = ["//platforms/family:debian"],
+)
+
+# Not executed directly, but if done so will fail to build :hello as above.
+sh_test(
+    name = "platform-deb-test",
+    srcs = ["pkg.test.sh"],
+    args = ["$(rootpaths :deb)"],  # pkg_deb produces two RPM files >:(
+    data = [":deb"],
+)
+
+# Expand :hello-test to execute on all listed platforms. The platform is
+# propagated from the :hello-test to :hello so that it will execute with the
+# binary built for the matching platform.
+platforms_test(
+    name = "platform-deb-test-suite",
+    platforms = [
+        "//platforms:debian/11",
+        "//platforms:debian/12",
+        "//platforms:ubuntu/kinetic",
+        "//platforms:ubuntu/lunar",
+    ],
+    test = ":platform-deb-test",
 )

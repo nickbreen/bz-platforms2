@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 set -xeu
 
 for hello
 do
-  test -x $hello && (exec $hello)  # execute in a subshell why not
+  (PATH=$PATH:$(dirname $hello) exec hello)  # execute in a subshell why not
 done
