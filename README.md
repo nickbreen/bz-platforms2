@@ -2,8 +2,13 @@
 
 Assuming you have `bazelisk` on your path as `bazel` and a recent `docker`:
 
-    docker buildx bake
-    bazel build //:hellos //:check-hellos //:tars //:check-tars //:rpms //:debs
+    ( cd executors; docker buildx bake )
+    bazel build --config docker //:hellos //:tars //:rpms //:debs
+    bazel test --config docker //:platform-{hello,tar,deb,rpm}-test-suite
+    
+    docker compose up -d
+    bazel build --config remote //:hellos //:tars //:rpms //:debs
+    bazel test --config remote //:platform-{hello,tar,deb,rpm}-test-suite
 
 ---
 

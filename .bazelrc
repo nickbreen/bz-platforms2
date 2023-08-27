@@ -13,12 +13,19 @@ build:docker --experimental_docker_use_customized_images  # If enabled we'll nee
 build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker
 build:docker --experimental_docker_privileged  # For SELinux
 
-build:remote --spawn_strategy=remote
+build:remote --strategy=CppCompile=remote --strategy=CppLink=remote --strategy=CcStrip=remote --strategy=MakeRpm=remote
+
+build --bes_results_url=http://buildbuddy.localhost:8080/invocation/
+build --bes_backend=grpc://buildbuddy.localhost:1985
+build --remote_cache=grpc://buildbuddy.localhost:1985
+build --remote_timeout=3600
+build:remote --remote_executor=grpc://buildbuddy.localhost:1985
+build --remote_header=x-buildbuddy-api-key=xvu01t1Q3kVGbDYlhj96
 
 build --incompatible_enable_cc_toolchain_resolution  # appears to be on by default in 6.2.1?
-build --config=docker
 
 #build --toolchain_resolution_debug @bazel_tools//tools/cpp:toolchain_type
 #build --toolchain_resolution_debug @rules_pkg.*//toolchains/rpm:rpmbuild_toolchain_type
 
 build --experimental_platforms_api
+
