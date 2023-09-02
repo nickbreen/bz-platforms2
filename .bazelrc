@@ -16,12 +16,12 @@ build:docker --experimental_docker_privileged  # For SELinux
 build:remote --strategy=CppCompile=remote --strategy=CppLink=remote --strategy=CcStrip=remote --strategy=MakeRpm=remote
 test:remote --strategy=remote
 
-build --bes_results_url=http://localhost:8080/invocation/
-build --bes_backend=grpc://localhost:1985
-build --remote_cache=grpc://localhost:1985
-build --remote_timeout=3600
+build:remote --bes_results_url=http://localhost:8080/invocation/
+build:remote --bes_backend=grpc://localhost:1985
+build:remote --remote_cache=grpc://localhost:1985
+build:remote --remote_timeout=3600
 build:remote --remote_executor=grpc://localhost:1985
-build --remote_header=x-buildbuddy-api-key=M3LUl7prhCCaqVCUAb18
+build:remote --remote_header=x-buildbuddy-api-key=M3LUl7prhCCaqVCUAb18
 
 build --incompatible_enable_cc_toolchain_resolution  # appears to be on by default in 6.2.1?
 
