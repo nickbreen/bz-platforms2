@@ -9,7 +9,7 @@ platform(
         "//platforms/glibc:2.12",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/centos:6",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/centos:6",
     },
 )
 
@@ -22,7 +22,7 @@ platform(
         "//platforms/glibc:2.17",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/centos:7",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/centos:7",
     },
 )
 
@@ -35,7 +35,7 @@ platform(
         "//platforms/glibc:2.31",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/debian:11",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/debian:11",
     },
 )
 
@@ -48,7 +48,7 @@ platform(
         "//platforms/glibc:2.36",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/debian:12",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/debian:12",
     },
 )
 
@@ -61,7 +61,7 @@ platform(
         "//platforms/glibc:2.36",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/fedora:37",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/fedora:37",
     },
 )
 
@@ -74,7 +74,7 @@ platform(
         "//platforms/glibc:2.37",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/fedora:38",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/fedora:38",
     },
 )
 
@@ -87,7 +87,7 @@ platform(
         "//platforms/glibc:2.28",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/rockylinux:8",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/rockylinux:8",
     },
 )
 
@@ -100,7 +100,7 @@ platform(
         "//platforms/glibc:2.34",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/rockylinux:9",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/rockylinux:9",
     },
 )
 
@@ -113,7 +113,7 @@ platform(
         "//platforms/glibc:2.36",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/ubuntu:kinetic",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:kinetic",
     },
 )
 
@@ -126,6 +126,6 @@ platform(
         "//platforms/glibc:2.37",
     ],
     exec_properties = {
-        "container-image": "docker://docker.io/executors/ubuntu:lunar",
+        "container-image": "docker://ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:lunar",
     },
 )
