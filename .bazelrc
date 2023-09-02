@@ -19,7 +19,7 @@ test:remote --strategy=remote
 build:remote --bes_results_url=http://localhost:8080/invocation/
 build:remote --bes_backend=grpc://localhost:1985
 build:remote --remote_cache=grpc://localhost:1985
-build:remote --remote_timeout=3600
+build:remote --remote_timeout=120
 build:remote --remote_executor=grpc://localhost:1985
 build:remote --remote_header=x-buildbuddy-api-key=M3LUl7prhCCaqVCUAb18
 
