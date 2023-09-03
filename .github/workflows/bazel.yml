@@ -17,8 +17,6 @@ jobs:
       packages: write
 
     steps:
-    - name: Dump ID
-      run: id -a
     - uses: actions/checkout@v3
     - uses: docker/login-action@v2
       with:
@@ -33,19 +31,25 @@ jobs:
         set: |
           *.cache-from=type=gha
           *.cache-to=type=gha,mode=max
+    - name: Bazel Home RC
+      run: |
+        echo "build --disk_cache=~/.cache/bazel.disk" >> ~/.bazelrc
+        echo "test --test_output=all" >> ~/.bazelrc
     - uses: actions/cache@v3
       with:
-        path: ~/.cache/bazel.disk
+        path: ${{github.workspace}}/.cache/bazel.disk
         key: bazel
+    - name: Bazel Group
+      run: sudo groupadd --gid 1001 bazel
     - name: Bazel Build
-      run: bazel build --config docker --disk_cache=~/.cache/bazel.disk hellos tars rpms debs
+      run: sudo -g bazel bazel build --config docker hellos tars rpms debs
     - name: Bazel Host Tests
-      run: bazel test --config docker --disk_cache=~/.cache/bazel.disk --test_output=all --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
+      run: sudo -g bazel bazel test --config docker --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
     - name: Bazel Platform Tests
-      run: bazel test --config docker --disk_cache=~/.cache/bazel.disk --test_output=all --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
+      run: sudo -g bazel bazel test --config docker --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
     - name: Work around https://github.com/actions/upload-artifact/issues/92
-      run: echo "bazel_out=$(bazel info output_path)" >> $GITHUB_ENV
-    - run: bazel shutdown
+      run: echo "bazel_out=$(sudo -g bazel bazel info output_path)" >> $GITHUB_ENV
+    - run: sudo -g bazel bazel shutdown
     - uses: actions/upload-artifact@v3
       with:
         name: test-results

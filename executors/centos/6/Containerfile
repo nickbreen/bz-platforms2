@@ -11,5 +11,3 @@ RUN --mount=type=cache,sharing=private,target=/var/cache/yum \
     yum install --setopt=keepcache=1 --assumeyes rpm-build python34 glibc-devel libstdc++-devel gcc sudo
 # Allow the bazelbuild user to install and erase RPM's when testing them
 RUN echo "bazelbuild ALL = NOPASSWD: /bin/rpm *, /usr/bin/rpm *" > /etc/sudoers.d/bazelbuild
-RUN getent group 100 | while IFS=: read group _ gid; do userdel games; groupdel ${group:?}; done
-RUN getent passwd 1000 | while IFS=: read user _ uid; do userdel --remove ${user:?}; done

@@ -6,5 +6,4 @@ RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     apt-get install --assume-yes gcc libc6-dev python3 sudo
 # Allow the bazelbuild user to install and erase DEB's when testing them
 RUN echo "bazelbuild ALL = NOPASSWD: /bin/dpkg *, /usr/bin/dpkg *" > /etc/sudoers.d/bazelbuild
-RUN getent group 100 | while IFS=: read group _ gid; do groupdel --force ${group:?}; done
-RUN getent passwd 1000 | while IFS=: read user _ uid; do userdel --remove ${user:?}; done
+
