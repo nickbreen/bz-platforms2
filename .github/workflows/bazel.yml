@@ -17,6 +17,10 @@ jobs:
       packages: write
 
     steps:
+    - name: Bazel Group
+      run: |
+        id -a
+        getent group 1001
     - uses: actions/checkout@v3
     - uses: docker/login-action@v2
       with:
@@ -39,8 +43,6 @@ jobs:
       with:
         path: ${{github.workspace}}/.cache/bazel.disk
         key: bazel
-    - name: Bazel Group
-      run: id -a
     - name: Bazel Build
       run: sudo -g runner bazel build --config docker hellos tars rpms debs
     - name: Bazel Host Tests
