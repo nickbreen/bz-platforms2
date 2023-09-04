@@ -32,6 +32,15 @@ jobs:
           set: |
             *.cache-from=type=gha
             *.cache-to=type=gha,mode=max
+      - name: Prune Dangling Container Images
+        uses: snok/container-retention-policy@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          account-type: personal
+          image-names: nickbreen/bz-platforms2/executors/*
+          untagged-only: true
+          cut-off: 1 day ago UTC
+          dry-run: true
 
   bazel:
     name: Bazel Build & Test
