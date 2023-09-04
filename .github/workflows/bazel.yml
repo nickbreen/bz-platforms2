@@ -44,14 +44,14 @@ jobs:
         path: ${{github.workspace}}/.cache/bazel.disk
         key: bazel
     - name: Bazel Build
-      run: sudo -g runner bazel build --config docker hellos tars rpms debs
+      run: sudo runuser -u runner -g runner -G docker bazel build --config docker hellos tars rpms debs
     - name: Bazel Host Tests
-      run: sudo -g runner bazel test --config docker --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
+      run: sudo runuser -u runner -g runner -G docker bazel test --config docker --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
     - name: Bazel Platform Tests
-      run: sudo -g runner bazel test --config docker --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
+      run: sudo runuser -u runner -g runner -G docker bazel test --config docker --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
     - name: Work around https://github.com/actions/upload-artifact/issues/92
-      run: echo "bazel_out=$(sudo -g runner bazel info output_path)" >> $GITHUB_ENV
-    - run: sudo -g runner bazel shutdown
+      run: echo "bazel_out=$(sudo runuser -u runner -g runner -G docker bazel info output_path)" >> $GITHUB_ENV
+    - run: sudo runuser -u runner -g runner -G docker bazel shutdown
     - uses: actions/upload-artifact@v3
       with:
         name: test-results
