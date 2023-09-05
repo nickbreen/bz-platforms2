@@ -32,6 +32,18 @@ jobs:
           set: |
             *.cache-from=type=gha
             *.cache-to=type=gha,mode=max
+      - name: Remove Untagged Container Images
+        run: |
+          set -x
+          gh api /user/packages?package_type=container | jq -r --arg repo {{github.repository}} '.[] | select(.repository.full_name == $repo) | .name' | tee {{runner.temp}}/names.txt
+          while read package
+          do
+            gh api /user/packages/container/${package//\//%2F}/versions | jq -r '.[] | select(.metadata.container.tags==[]) | .id' | tee {{runner.temp}}/ids.txt
+            while read id
+            do
+              echo gh api --method DELETE /user/packages/container/${package//\//%2F}/versions/${id}
+            done < {{runner.temp}}/ids.txt 
+          done < {{runner.temp}}/names.txt          
 
   bazel:
     name: Bazel Build & Test
