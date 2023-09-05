@@ -37,15 +37,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -x
-          gh api /user/packages?package_type=container | jq -r --arg repo $GITHUB_REPOSITORY '.[] | select(.repository.full_name == $repo) | .name' | tee $RUNNER_TEMP/names.txt
+          gh api --method GET user/packages --field package_type=container | jq -r --arg repo $GITHUB_REPOSITORY '.[] | select(.repository.full_name == $repo) | .name' | tee $RUNNER_TEMP/names.txt
           while read package
           do
-            gh api /user/packages/container/${package//\//%2F}/versions | jq -r '.[] | select(.metadata.container.tags==[]) | .id' | tee $RUNNER_TEMP/ids.txt
+            gh api user/packages/container/${package//\//%2F}/versions | jq -r '.[] | select(.metadata.container.tags==[]) | .id' | tee $RUNNER_TEMP/ids.txt
             while read id
             do
-              echo gh api --method DELETE /user/packages/container/${package//\//%2F}/versions/${id}
+              echo gh api --method DELETE user/packages/container/${package//\//%2F}/versions/${id}
             done < $RUNNER_TEMP/ids.txt 
-          done < $RUNNER_TEMP/names.txt          
+          done < $RUNNER_TEMP/names.txt
 
   bazel:
     name: Bazel Build & Test
