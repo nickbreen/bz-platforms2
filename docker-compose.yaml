@@ -13,7 +13,6 @@ services:
       - mysql:/var/lib/mysql
     healthcheck:
       test: [CMD-SHELL, "mariadb -u$${MYSQL_USER?} -p$${MYSQL_PASSWORD?} $${MYSQL_DATABASE?}"]
-      start_period: 15s
   redis:
     image: redis:latest
     volumes:
@@ -51,16 +50,13 @@ services:
     depends_on:
       - app
     image: gcr.io/flame-public/buildbuddy-executor-enterprise:latest
+    privileged: true
     command:
-      - "--app.build_buddy_url=http://app:8080"
-      - "--app.cache_api_url=grpc://app:1985"
-      - "--app.default_redis_target=redis:6379"
-      - "--auth.enable_anonymous_usage=true"
-      - "--auth.enable_self_auth=true"
-      - "--database.data_source=mysql://buildbuddy:buildbuddy@tcp(mysql)/buildbuddy"
       - "--executor.app_target=grpc://app:1985"
       - "--executor.local_cache_size_bytes=5368709120"
       - "--executor.docker_socket=/var/run/docker.sock"
+      - "--executor.root_directory=/var/tmp/buildbuddy"
+      - "--executor.disable_local_cache=true"
     volumes:
-      - /buildbuddy
+      - /var/tmp/buildbuddy:/var/tmp/buildbuddy:rw
       - /var/run/docker.sock:/var/run/docker.sock
