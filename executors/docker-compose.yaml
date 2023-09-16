@@ -1,60 +1,60 @@
 services:
   centos-6:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version; rpm --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version; rpm --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/centos:6
     build:
       context: centos/6
       dockerfile: Containerfile
   centos-7:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version; rpm --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version; rpm --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/centos:7
     build:
       context: centos/7
       dockerfile: Containerfile
   debian-11:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/debian:11
     build:
       context: debian/11
       dockerfile: Containerfile
   debian-12:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/debian:12
     build:
       context: debian/12
       dockerfile: Containerfile
   fedora-37:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version; rpm --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version; rpm --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/fedora:37
     build:
       context: fedora/37
       dockerfile: Containerfile
   fedora-38:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version; rpm --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version; rpm --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/fedora:38
     build:
       context: fedora/38
       dockerfile: Containerfile
   rockylinux-8:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version; rpm --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version; rpm --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/rockylinux:8
     build:
       context: rockylinux/8
       dockerfile: Containerfile
   rockylinux-9:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version; rpm --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version; rpm --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/rockylinux:9
     build:
       context: rockylinux/9
       dockerfile: Containerfile
   ubuntu-focal:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:focal
     build:
       context: ubuntu/focal
       dockerfile: Containerfile
   ubuntu-jammy:
-    command: ["sh", "-c", "ld --version; gcc --version; python3 --version"]
+    command: ["sh", "-c", "ldd --version; gcc --version; python3 --version"]
     image: ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:jammy
     build:
       context: ubuntu/jammy

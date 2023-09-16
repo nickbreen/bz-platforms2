@@ -5,19 +5,6 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load(":defs.bzl", "platforms", "platforms_test")
 load("@rules_cc//cc:defs.bzl", "cc_binary")
 
-genrule(
-    name = "trivial",
-    srcs = ["hello.c"],
-    outs = ["trivial.txt"],
-    cmd = """
-    exec | tee $@
-    pwd
-    cat /etc/os-release
-    find -ls
-    stat hello.c
-    """,
-)
-
 # Not built directly, but if done so will fail to build as CppCompile etcetera
 # are configured to *only* build in a container.
 # This *can* be built directly in an arbitrary container by overriding the

@@ -1,0 +1,58 @@
+package(default_visibility = ["//visibility:public"])
+
+constraint_setting(name = "gcc")
+
+constraint_value(
+    name = "4.4.7",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "4.8.5",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "8.5.0",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "9.4.0",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "10.2.1",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "11.3.1",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "13.1.1",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "11.4.0",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "12.2.0",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "12.3.1",
+    constraint_setting = ":gcc",
+)
+
+constraint_value(
+    name = "13.2.1",
+    constraint_setting = ":gcc",
+)

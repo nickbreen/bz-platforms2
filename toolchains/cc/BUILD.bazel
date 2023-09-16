@@ -65,6 +65,17 @@ opt_link_flags = ["-Wl,--gc-sections"]
 # and empty set of files to provide to the cc_toolchain rule.
 filegroup(name = "exec-platform-provided")
 
+# While these are named for OS/version they are actually just
+# the combinations of GCC and GLIBC available on each of those OS/versions.
+
+# Family constraints are included as redhat family OS's and debian family OS's
+# have different GCC include paths.
+
+# Note that these are resolved for platform a platform by matching constraints.
+# Which means that as long they match it's a candidate toolchain. E.g.
+#    "@platforms//cpu:x86_64", "@platforms//os:linux",
+#    "//platforms/family:*", "//platforms/glibc:*", "//platforms/gcc:*"
+
 # C toolchains - vary gcc/glibc versions and include paths by platform.
 # We need to define each platform's specific combination of GNU C version and
 # GNU libc version.
@@ -112,12 +123,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.12",
+        "//platforms/gcc:4.4.7",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.12",
+        "//platforms/gcc:4.4.7",
     ],
     toolchain = ":cc/centos/6",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -167,12 +180,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.17",
+        "//platforms/gcc:4.8.5",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.17",
+        "//platforms/gcc:4.8.5",
     ],
     toolchain = ":cc/centos/7",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -221,12 +236,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.28",
+        "//platforms/gcc:8.5.0",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.28",
+        "//platforms/gcc:8.5.0",
     ],
     toolchain = ":cc/rockylinux/8",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -275,12 +292,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.34",
+        "//platforms/gcc:11.3.1",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.34",
+        "//platforms/gcc:11.3.1",
     ],
     toolchain = ":cc/rockylinux/9",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -329,12 +348,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.36",
+        "//platforms/gcc:12.3.1",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.36",
+        "//platforms/gcc:12.3.1",
     ],
     toolchain = ":cc/fedora/37",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -383,12 +404,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.37",
+        "//platforms/gcc:13.2.1",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:redhat",
         "//platforms/glibc:2.37",
+        "//platforms/gcc:13.2.1",
     ],
     toolchain = ":cc/fedora/38",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -437,12 +460,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.31",
+        "//platforms/gcc:10.2.1",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.31",
+        "//platforms/gcc:10.2.1",
     ],
     toolchain = ":cc/debian/11",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -491,12 +516,14 @@ toolchain(
         "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
+        "//platforms/gcc:12.2.0",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
         "//platforms/glibc:2.36",
+        "//platforms/gcc:12.2.0",
     ],
     toolchain = ":cc/debian/12",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -504,7 +531,7 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/ubuntu/focal",
-    abi_libc_version = "glibc-2.34",
+    abi_libc_version = "glibc-2.31",
     abi_version = "gcc-9.4.0",
     compile_flags = compile_flags,
     compiler = "gcc-9.4.0",
@@ -520,7 +547,7 @@ cc_toolchain_config(
     link_libs = link_libs,
     opt_compile_flags = opt_compile_flags,
     opt_link_flags = opt_link_flags,
-    target_libc = "glibc-2.34",
+    target_libc = "glibc-2.31",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
     toolchain_identifier = "k8_ubuntu_focal",
@@ -544,13 +571,15 @@ toolchain(
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.34",
+        "//platforms/glibc:2.31",
+        "//platforms/gcc:9.4.0",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.34",
+        "//platforms/glibc:2.31",
+        "//platforms/gcc:9.4.0",
     ],
     toolchain = ":cc/ubuntu/focal",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
@@ -558,7 +587,7 @@ toolchain(
 
 cc_toolchain_config(
     name = "config/ubuntu/jammy",
-    abi_libc_version = "glibc-2.38",
+    abi_libc_version = "glibc-2.35",
     abi_version = "gcc-11.4.0",
     compile_flags = compile_flags,
     compiler = "gcc-11.4.0",
@@ -574,7 +603,7 @@ cc_toolchain_config(
     link_libs = link_libs,
     opt_compile_flags = opt_compile_flags,
     opt_link_flags = opt_link_flags,
-    target_libc = "glibc-2.38",
+    target_libc = "glibc-2.35",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
     toolchain_identifier = "k8_ubuntu_jammy",
@@ -598,13 +627,15 @@ toolchain(
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.38",
+        "//platforms/glibc:2.35",
+        "//platforms/gcc:11.4.0",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.38",
+        "//platforms/glibc:2.35",
+        "//platforms/gcc:11.4.0",
     ],
     toolchain = ":cc/ubuntu/jammy",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",

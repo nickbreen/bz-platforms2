@@ -28,6 +28,11 @@ constraint_value(
 )
 
 constraint_value(
+    name = "2.35",
+    constraint_setting = ":glibc",
+)
+
+constraint_value(
     name = "2.36",
     constraint_setting = ":glibc",
 )
