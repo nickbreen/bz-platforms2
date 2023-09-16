@@ -41,7 +41,8 @@ jobs:
     steps:
       - name: Bazel Home RC
         run: |
-          echo "build --config=ci" >> ~/.bazelrc
+          echo "test --config=ci" >> ~/.bazelrc
+          echo "build --config=docker" >> ~/.bazelrc
           echo "build --disk_cache=~/.cache/bazel.disk" >> ~/.bazelrc
       - uses: actions/cache@v3
         with:
@@ -51,15 +52,15 @@ jobs:
       - name: Work around https://github.com/actions/upload-artifact/issues/92
         run: echo "bazel_out=$(sudo runuser -u runner -g runner -G docker -- bazel info output_path)" >> $GITHUB_ENV
       - name: Bazel Build
-        run: sudo runuser -u runner -g runner -G docker -- bazel build --config docker hellos tars rpms debs
+        run: sudo runuser -u runner -g runner -G docker -- bazel build hellos tars rpms debs
       - name: Bazel Host Tests
-        run: sudo runuser -u runner -g runner -G docker -- bazel test --config docker --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
+        run: sudo runuser -u runner -g runner -G docker -- bazel test --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
       - uses: actions/upload-artifact@v3
         with:
           name: host-test-results
           path: ${{env.bazel_out}}/*/testlogs/**
       - name: Bazel Remote Tests
-        run: sudo runuser -u runner -g runner -G docker -- bazel test --config docker --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
+        run: sudo runuser -u runner -g runner -G docker -- bazel test --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
       - uses: actions/upload-artifact@v3
         with:
           name: docker-test-results
@@ -74,15 +75,16 @@ jobs:
     steps:
       - name: Bazel Home RC
         run: |
-          echo "build --config=ci" >> ~/.bazelrc
+          echo "test --config=ci" >> ~/.bazelrc
+          echo "build --config=bb" >> ~/.bazelrc
           echo "build:bb --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }}" >> ~/.bazelrc
       - uses: actions/checkout@v3
       - name: Work around https://github.com/actions/upload-artifact/issues/92
         run: echo "bazel_out=$(bazel info output_path)" >> $GITHUB_ENV
       - name: Bazel Build with BuildBuddy
-        run: bazel build --config bb hellos tars rpms debs
+        run: bazel build hellos tars rpms debs
       - name: Bazel Test
-        run: bazel test --config bb platform-{hello,tar,rpm,deb}-test-suite
+        run: bazel test platform-{hello,tar,rpm,deb}-test-suite
       - uses: actions/upload-artifact@v3
         with:
           name: buildbuddy-test-results
