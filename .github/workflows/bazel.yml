@@ -34,30 +34,57 @@ jobs:
             *.cache-to=type=gha,mode=max
 
   bazel:
-    name: Bazel Build & Test
+    name: Bazel Build & Test w/Docker
     runs-on: ubuntu-latest
     needs:
       - executors
     steps:
-    - name: Bazel Home RC
-      run: |
-        echo "build --disk_cache=~/.cache/bazel.disk" >> ~/.bazelrc
-        echo "test --test_output=all" >> ~/.bazelrc
-    - uses: actions/cache@v3
-      with:
-        path: ${{github.workspace}}/.cache/bazel.disk
-        key: bazel
-    - uses: actions/checkout@v3
-    - name: Bazel Build with Docker
-      run: sudo runuser -u runner -g runner -G docker -- bazel build --config docker hellos tars rpms debs
-    - name: Bazel Host Tests
-      run: sudo runuser -u runner -g runner -G docker -- bazel test --config docker --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
-    - name: Bazel Docker Tests
-      run: sudo runuser -u runner -g runner -G docker -- bazel test --config docker --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
-    - name: Work around https://github.com/actions/upload-artifact/issues/92
-      run: echo "bazel_out=$(sudo runuser -u runner -g runner -G docker -- bazel info output_path)" >> $GITHUB_ENV
-    - run: sudo runuser -u runner -g runner -G docker -- bazel shutdown
-    - uses: actions/upload-artifact@v3
-      with:
-        name: test-results
-        path: ${{env.bazel_out}}/*/testlogs/**
+      - name: Bazel Home RC
+        run: |
+          echo "build --config=ci" >> ~/.bazelrc
+          echo "build --disk_cache=~/.cache/bazel.disk" >> ~/.bazelrc
+      - uses: actions/cache@v3
+        with:
+          path: ${{github.workspace}}/.cache/bazel.disk
+          key: bazel
+      - uses: actions/checkout@v3
+      - name: Work around https://github.com/actions/upload-artifact/issues/92
+        run: echo "bazel_out=$(sudo runuser -u runner -g runner -G docker -- bazel info output_path)" >> $GITHUB_ENV
+      - name: Bazel Build
+        run: sudo runuser -u runner -g runner -G docker -- bazel build --config docker hellos tars rpms debs
+      - name: Bazel Host Tests
+        run: sudo runuser -u runner -g runner -G docker -- bazel test --config docker --strategy=TestRunner=sandboxed host-{hellos,tars}-test # We won't test the RPM and DEB tests on the host as they actually install the package.
+      - uses: actions/upload-artifact@v3
+        with:
+          name: host-test-results
+          path: ${{env.bazel_out}}/*/testlogs/**
+      - name: Bazel Remote Tests
+        run: sudo runuser -u runner -g runner -G docker -- bazel test --config docker --strategy=TestRunner=docker platform-{hello,tar,rpm,deb}-test-suite
+      - uses: actions/upload-artifact@v3
+        with:
+          name: docker-test-results
+          path: ${{env.bazel_out}}/*/testlogs/**
+      - run: sudo runuser -u runner -g runner -G docker -- bazel shutdown
+
+  buildbuddy:
+    name: Bazel Build & Test w/BuildBuddy
+    runs-on: ubuntu-latest
+    needs:
+      - executors
+    steps:
+      - name: Bazel Home RC
+        run: |
+          echo "build --config=ci" >> ~/.bazelrc
+          echo "build:bb --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }}" >> ~/.bazelrc
+      - uses: actions/checkout@v3
+      - name: Work around https://github.com/actions/upload-artifact/issues/92
+        run: echo "bazel_out=$(bazel info output_path)" >> $GITHUB_ENV
+      - name: Bazel Build with BuildBuddy
+        run: bazel build --config bb hellos tars rpms debs
+      - name: Bazel Test
+        run: bazel test --config bb platform-{hello,tar,rpm,deb}-test-suite
+      - uses: actions/upload-artifact@v3
+        with:
+          name: buildbuddy-test-results
+          path: ${{env.bazel_out}}/*/testlogs/**
+      - run: bazel shutdown

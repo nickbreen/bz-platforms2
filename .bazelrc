@@ -5,16 +5,16 @@ common --ui_actions_shown 64
 build --incompatible_strict_action_env
 build --show_result=20
 build --verbose_failures
+build --incompatible_enable_cc_toolchain_resolution
+build --experimental_platforms_api
 test --test_output=errors
+test:ci --test_output=all
 
 build:docker --experimental_docker_verbose
 build:docker --experimental_enable_docker_sandbox
-build:docker --experimental_docker_use_customized_images  # If enabled we'll need to customise the images ourselves
+build:docker --experimental_docker_use_customized_images
 build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker
-build:docker --experimental_docker_privileged  # For SELinux
-
-#build:remote --strategy=CppCompile=remote --strategy=CppLink=remote --strategy=CcStrip=remote --strategy=MakeRpm=remote
-test:remote --strategy=remote
+build:docker --experimental_docker_privileged
 
 build:remote --bes_results_url=http://localhost:8080/invocation/
 build:remote --bes_backend=grpc://localhost:1985
@@ -23,6 +23,13 @@ build:remote --remote_timeout=120
 build:remote --remote_executor=grpc://localhost:1985
 build:remote --remote_header=x-buildbuddy-api-key=M3LUl7prhCCaqVCUAb18
 
-build --incompatible_enable_cc_toolchain_resolution
-build --experimental_platforms_api
-
+build:bb --build_metadata=ROLE=CI
+build:bb --bes_results_url=https://app.buildbuddy.io/invocation/
+build:bb --bes_backend=grpcs://remote.buildbuddy.io
+build:bb --remote_cache=grpcs://remote.buildbuddy.io
+build:bb --remote_executor=grpcs://remote.buildbuddy.io
+build:bb --remote_upload_local_results
+#build:bb --host_platform=@buildbuddy_toolchain//:platform
+#build:bb --platforms=@buildbuddy_toolchain//:platform
+#build:bb --crosstool_top=@buildbuddy_toolchain//:toolchain
+build:bb --jobs=100
