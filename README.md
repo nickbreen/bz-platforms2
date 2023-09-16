@@ -24,8 +24,8 @@ We want to target platforms with varied GLIBC versions.
     fedora:38      redhat RPM  2.37 glibc-2.37-4.fc38.x86_64    
     rockylinux:8   redhat RPM  2.28 glibc-2.28-211.el8.x86_64   
     rockylinux:9   redhat RPM  2.34 glibc-2.34-60.el9.x86_64    
-    ubuntu:kinetic debian DEB  2.36 libc6=2.36-0ubuntu4         
-    ubuntu:lunar   debian DEB  2.37 libc6=2.37-0ubuntu2         
+    ubuntu:focal debian DEB  2.36 libc6=2.36-0ubuntu4         
+    ubuntu:jammy   debian DEB  2.37 libc6=2.37-0ubuntu2         
 
 We could use https://github.com/wheybags/glibc_version_header
 to link to lowest-common denominator GLIBC symbols. But, glibc 2.34 has a

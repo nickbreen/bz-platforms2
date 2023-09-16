@@ -8,7 +8,7 @@ load("@bazel_tools//tools/cpp:unix_cc_toolchain_config.bzl", "cc_toolchain_confi
 # apparently mandatory yet ignored (e.g. host_system_name).
 
 # All of the following common chunks have been yoinked from @local_config_cc
-# on Ubuntu/lunar except where commented.
+# on Ubuntu/jammy except where commented.
 tool_paths = {
     "ar": "/usr/bin/ar",
     "ld": "/usr/bin/ld",
@@ -503,15 +503,15 @@ toolchain(
 )
 
 cc_toolchain_config(
-    name = "config/ubuntu/kenetic",
-    abi_libc_version = "glibc-2.36",
-    abi_version = "gcc-12.2.0",
+    name = "config/ubuntu/focal",
+    abi_libc_version = "glibc-2.34",
+    abi_version = "gcc-9.4.0",
     compile_flags = compile_flags,
-    compiler = "gcc-12.2.0",
+    compiler = "gcc-9.4.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/lib/gcc/x86_64-linux-gnu/12/include",
+        "/usr/lib/gcc/x86_64-linux-gnu/9/include",
     ],
     cxx_flags = cxx_flags,
     dbg_compile_flags = dbg_compile_flags,
@@ -520,52 +520,52 @@ cc_toolchain_config(
     link_libs = link_libs,
     opt_compile_flags = opt_compile_flags,
     opt_link_flags = opt_link_flags,
-    target_libc = "glibc-2.36",
+    target_libc = "glibc-2.34",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
-    toolchain_identifier = "k8_ubuntu_kinetic",
+    toolchain_identifier = "k8_ubuntu_focal",
 )
 
 cc_toolchain(
-    name = "cc/ubuntu/kinetic",
+    name = "cc/ubuntu/focal",
     all_files = ":exec-platform-provided",
     compiler_files = ":exec-platform-provided",
     dwp_files = ":exec-platform-provided",
     linker_files = ":exec-platform-provided",
     objcopy_files = ":exec-platform-provided",
     strip_files = ":exec-platform-provided",
-    toolchain_config = ":config/ubuntu/kenetic",
-    toolchain_identifier = "cc_ubuntu_kinetic",
+    toolchain_config = ":config/ubuntu/focal",
+    toolchain_identifier = "cc_ubuntu_focal",
 )
 
 toolchain(
-    name = "ubuntu/kinetic",
+    name = "ubuntu/focal",
     exec_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.36",
+        "//platforms/glibc:2.34",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.36",
+        "//platforms/glibc:2.34",
     ],
-    toolchain = ":cc/ubuntu/kinetic",
+    toolchain = ":cc/ubuntu/focal",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
 
 cc_toolchain_config(
-    name = "config/ubuntu/lunar",
-    abi_libc_version = "glibc-2.37",
-    abi_version = "gcc-12.2.0",
+    name = "config/ubuntu/jammy",
+    abi_libc_version = "glibc-2.38",
+    abi_version = "gcc-11.4.0",
     compile_flags = compile_flags,
-    compiler = "gcc-12.2.0",
+    compiler = "gcc-11.4.0",
     cpu = "k8",
     cxx_builtin_include_directories = [
         "/usr/include",
-        "/usr/lib/gcc/x86_64-linux-gnu/12/include",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/include",
     ],
     cxx_flags = cxx_flags,
     dbg_compile_flags = dbg_compile_flags,
@@ -574,38 +574,38 @@ cc_toolchain_config(
     link_libs = link_libs,
     opt_compile_flags = opt_compile_flags,
     opt_link_flags = opt_link_flags,
-    target_libc = "glibc-2.37",
+    target_libc = "glibc-2.38",
     target_system_name = "linux-gnu",
     tool_paths = tool_paths,
-    toolchain_identifier = "k8_ubuntu_lunar",
+    toolchain_identifier = "k8_ubuntu_jammy",
 )
 
 cc_toolchain(
-    name = "cc/ubuntu/lunar",
+    name = "cc/ubuntu/jammy",
     all_files = ":exec-platform-provided",
     compiler_files = ":exec-platform-provided",
     dwp_files = ":exec-platform-provided",
     linker_files = ":exec-platform-provided",
     objcopy_files = ":exec-platform-provided",
     strip_files = ":exec-platform-provided",
-    toolchain_config = ":config/ubuntu/lunar",
-    toolchain_identifier = "cc_ubuntu_lunar",
+    toolchain_config = ":config/ubuntu/jammy",
+    toolchain_identifier = "cc_ubuntu_jammy",
 )
 
 toolchain(
-    name = "ubuntu/lunar",
+    name = "ubuntu/jammy",
     exec_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.37",
+        "//platforms/glibc:2.38",
     ],
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
         "//platforms/family:debian",
-        "//platforms/glibc:2.37",
+        "//platforms/glibc:2.38",
     ],
-    toolchain = ":cc/ubuntu/lunar",
+    toolchain = ":cc/ubuntu/jammy",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )

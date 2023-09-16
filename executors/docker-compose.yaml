@@ -47,15 +47,15 @@ services:
     build:
       context: rockylinux/9
       dockerfile: Containerfile
-  ubuntu-kinetic:
+  ubuntu-focal:
     command: ["sh", "-c", "ld --version; gcc --version; python3 --version"]
-    image: ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:kinetic
+    image: ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:focal
     build:
-      context: ubuntu/kinetic
+      context: ubuntu/focal
       dockerfile: Containerfile
-  ubuntu-lunar:
+  ubuntu-jammy:
     command: ["sh", "-c", "ld --version; gcc --version; python3 --version"]
-    image: ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:lunar
+    image: ghcr.io/nickbreen/bz-platforms2/executors/ubuntu:jammy
     build:
-      context: ubuntu/lunar
+      context: ubuntu/jammy
       dockerfile: Containerfile

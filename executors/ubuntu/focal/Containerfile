@@ -1,4 +1,4 @@
-FROM ubuntu:kinetic
+FROM ubuntu:focal
 
 RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     export DEBIAN_FRONTEND=noninteractive && \

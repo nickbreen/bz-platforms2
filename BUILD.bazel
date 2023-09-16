@@ -46,8 +46,8 @@ platforms(
         "//platforms:fedora/38",
         "//platforms:rockylinux/8",
         "//platforms:rockylinux/9",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
     target_platforms = [
         "//platforms:centos/6",
@@ -58,8 +58,8 @@ platforms(
         "//platforms:fedora/38",
         "//platforms:rockylinux/8",
         "//platforms:rockylinux/9",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
 )
 
@@ -94,8 +94,8 @@ platforms_test(
         "//platforms:fedora/38",
         "//platforms:rockylinux/8",
         "//platforms:rockylinux/9",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
     test = ":platform-hello-test",
 )
@@ -131,8 +131,8 @@ platforms(
         "//platforms:fedora/38",
         "//platforms:rockylinux/8",
         "//platforms:rockylinux/9",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
     target_platforms = [
         "//platforms:centos/6",
@@ -143,8 +143,8 @@ platforms(
         "//platforms:fedora/38",
         "//platforms:rockylinux/8",
         "//platforms:rockylinux/9",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
 )
 
@@ -178,8 +178,8 @@ platforms_test(
         "//platforms:fedora/38",
         "//platforms:rockylinux/8",
         "//platforms:rockylinux/9",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
     test = ":platform-tar-test",
 )
@@ -279,14 +279,14 @@ platforms(
     exec_platforms = [
         "//platforms:debian/11",
         "//platforms:debian/12",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
     target_platforms = [
         "//platforms:debian/11",
         "//platforms:debian/12",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
 )
 
@@ -316,8 +316,8 @@ platforms_test(
     platforms = [
         "//platforms:debian/11",
         "//platforms:debian/12",
-        "//platforms:ubuntu/kinetic",
-        "//platforms:ubuntu/lunar",
+        "//platforms:ubuntu/focal",
+        "//platforms:ubuntu/jammy",
     ],
     test = ":platform-deb-test",
 )

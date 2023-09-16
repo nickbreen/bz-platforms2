@@ -15,6 +15,6 @@ register_toolchains(
     "//toolchains/cc:fedora/38",
     "//toolchains/cc:rockylinux/8",
     "//toolchains/cc:rockylinux/9",
-    "//toolchains/cc:ubuntu/kinetic",
-    "//toolchains/cc:ubuntu/lunar",
+    "//toolchains/cc:ubuntu/focal",
+    "//toolchains/cc:ubuntu/jammy",
 )
