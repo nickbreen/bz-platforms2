@@ -13,7 +13,7 @@ test:ci --test_output=all
 build:docker --experimental_docker_verbose
 build:docker --experimental_enable_docker_sandbox
 build:docker --experimental_docker_use_customized_images
-build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker
+build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker --strategy=MakeDeb=docker --strategy=PackageTar=docker
 build:docker --experimental_docker_privileged
 
 build:remote --bes_results_url=http://localhost:8080/invocation/
@@ -21,7 +21,6 @@ build:remote --bes_backend=grpc://localhost:1985
 build:remote --remote_cache=grpc://localhost:1985
 build:remote --remote_timeout=120
 build:remote --remote_executor=grpc://localhost:1985
-build:remote --remote_header=x-buildbuddy-api-key=M3LUl7prhCCaqVCUAb18
 
 build:bb --build_metadata=ROLE=CI
 build:bb --bes_results_url=https://app.buildbuddy.io/invocation/
@@ -29,7 +28,11 @@ build:bb --bes_backend=grpcs://remote.buildbuddy.io
 build:bb --remote_cache=grpcs://remote.buildbuddy.io
 build:bb --remote_executor=grpcs://remote.buildbuddy.io
 build:bb --remote_upload_local_results
-#build:bb --host_platform=@buildbuddy_toolchain//:platform
-#build:bb --platforms=@buildbuddy_toolchain//:platform
-#build:bb --crosstool_top=@buildbuddy_toolchain//:toolchain
 build:bb --jobs=100
+
+build --toolchain_resolution_debug=@rules_python//python:toolchain_type
+
+# Invalidate all outputs by setting a new value for the environment variable "FUDGE".
+# e.g. export FUDGE="$(date)"
+build --action_env=FUDGE
+test --test_env=FUDGE

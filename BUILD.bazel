@@ -102,15 +102,12 @@ pkg_tar(
     srcs = [":pkg/hello"],
 )
 
-# Expand :tar to build for all platforms. the MakeTar action does *not* have its
-# strategy set to docker, so while it will execute with the default strategies:
-#     remote,worker,sandboxed,local
-# It will build for each platform and package the matching :hello binary.
+# Expand :tar to build for all platforms on each platform.
 platforms(
     name = "tars",
     actual = ":tar",
     exec_platforms = [
-        "//platforms:centos/6",
+        #"//platforms:centos/6",  # CentOS6's Python 3.4 is too old for pkg_tar.
         "//platforms:centos/7",
         "//platforms:debian/11",
         "//platforms:debian/12",
@@ -122,7 +119,7 @@ platforms(
         "//platforms:ubuntu/jammy",
     ],
     target_platforms = [
-        "//platforms:centos/6",
+        #"//platforms:centos/6",  # CentOS6's Python 3.4 is too old for pkg_tar.
         "//platforms:centos/7",
         "//platforms:debian/11",
         "//platforms:debian/12",
@@ -157,7 +154,7 @@ sh_test(
 platforms_test(
     name = "platform-tar-test-suite",
     platforms = [
-        "//platforms:centos/6",
+        # "//platforms:centos/6",  # CentOS6's Python 3.4 is too old for pkg_tar.
         "//platforms:centos/7",
         "//platforms:debian/11",
         "//platforms:debian/12",

@@ -1,31 +1,48 @@
 [![Bazel CI](https://github.com/nickbreen/bz-platforms2/actions/workflows/bazel.yml/badge.svg)](https://github.com/nickbreen/bz-platforms2/actions/workflows/bazel.yml)
 
-Assuming you have `bazelisk` on your path as `bazel` and a recent `docker`:
+Assumptions: you have `bazelisk` on your path as `bazel` and a recent `docker`.
+
+Emulate remote builds with the experimental docker strategy:
 
     ( cd executors; docker buildx bake )
-    bazel build --config docker //:hellos //:tars //:rpms //:debs
     bazel test --config docker //:platform-{hello,tar,deb,rpm}-test-suite
+
+Start a local instance of BuildBuddy with remote execution enabled and your API
+Key configured in `~/.bazelrc` 
+as `build:remote --remote_header=x-buildbuddy-api-key=[REDACTED]`:
     
     docker compose up -d
-    bazel build --config remote //:hellos //:tars //:rpms //:debs
     bazel test --config remote //:platform-{hello,tar,deb,rpm}-test-suite
+
+Use BuildBuddy Cloud and your API Key configured in `~/.bazelrc` 
+as `build:bb --remote_header=x-buildbuddy-api-key=[REDACTED]`: 
+
+    bazel test --config bb //:platform-{hello,tar,deb,rpm}-test-suite
+
+Bazel will cache the outputs and results, so you'll need to invalidate them if 
+you want to run these builds/tests repeatedly.
+
+`.bazelrc` configures an environment variable `FUDGE` that can be set to a new
+value to invalidate all build outputs and test results. E.g.
+
+    export FUDGE="$(date)"
 
 ---
 
-We want to target platforms with varied GLIBC versions.
+We want to target various platforms:
 
-    OS             Family PKG GLIBC Dependency                  
-    -------------- ------ --- ----- ----------------------------
-    centos:6       redhat RPM  2.12 glibc-2.12-1.212.el6.x86_64 
-    centos:7       redhat RPM  2.17 glibc-2.17-317.el7.x86_64   
-    debian:11      debian DEB  2.31 libc6=2.31-13+deb11u5       
-    debian:12      debian DEB  2.36 libc6=2.36-9                
-    fedora:37      redhat RPM  2.36 glibc-2.36-9.fc37.x86_64    
-    fedora:38      redhat RPM  2.37 glibc-2.37-4.fc38.x86_64    
-    rockylinux:8   redhat RPM  2.28 glibc-2.28-211.el8.x86_64   
-    rockylinux:9   redhat RPM  2.34 glibc-2.34-60.el9.x86_64    
-    ubuntu:focal   debian DEB  2.31 libc6=2.31-0ubuntu9.9         
-    ubuntu:jammy   debian DEB  2.35 libc6=2.35-0ubuntu3.1         
+    OS             Family  PKG GLIBC GCC                  
+    -------------- ------ ---- ----- -------
+    centos:6       redhat  RPM  2.12   4.4.7  
+    centos:7       redhat  RPM  2.17   4.8.5    
+    debian:11      debian  DEB  2.31  10.2.1        
+    debian:12      debian  DEB  2.36  12.2.0                 
+    fedora:37      redhat  RPM  2.36  12.3.1     
+    fedora:38      redhat  RPM  2.37  13.2.1     
+    rockylinux:8   redhat  RPM  2.28   8.5.0    
+    rockylinux:9   redhat  RPM  2.34  11.3.1     
+    ubuntu:focal   debian  DEB  2.31   9.4.0          
+    ubuntu:jammy   debian  DEB  2.35  11.4.0          
 
 We could use https://github.com/wheybags/glibc_version_header
 to link to lowest-common denominator GLIBC symbols. But, glibc 2.34 has a
@@ -33,34 +50,62 @@ hard break where you cannot compile with 2.34 and have it work with older
 glibc versions even if you use those version headers. It will always
 link `__libc_start_main@GLIBC_2.34`.
 
-So, to target various versions of GLIBC we need to be clever-er.
+We could reduce the compilations down to GNU libc 2.12 and 2.34 as the two
+lowest common version and then package; this assumes that GNU libc is the only
+compilation dependency with some version issue. Consider GCC, or adding OpenSSL too...
 
-So, we sort of have a sparse matrix of GLIBC versions:
+So, we sort of have a sparse matrix of:
 
+GLIBC versions:
 - 2.12
 - 2.17
 - 2.28
 - 2.31
-- 2.34 *** hard break `__libc_start_main@GLIBC_2.34`!
+- 2.34 *** backwards-incompatible change: `__libc_start_main@GLIBC_2.34`!
 - 2.36
 - 2.37
-- 2.38
 
-By OS/Family/Packaging:
+GCC versions:
+- 4.4.7
+- 4.8.5
+- 8.5.0
+- 9.4.0
+- 10.2.1
+- 11.3.1
+- 11.4.0
+- 12.2.0
+- 12.3.1
+- 13.2.1
 
-- RPM
-- DEB
+Packaging Type & OS Family:
+- RPM & RedHat-likes
+- DEB & Debian-likes
 - TGZ
 
-We could reduce the compilations down to GNU libc 2.12 and 2.34 as the two
-lowest common version and then package; this assumes that GNU libc is the only
-compilation dependency with some version issue. Consider adding OpenSSL too.
-Or python, or what-have-you. So...
+RPM version:
+- 4.8.0
+- 4.11.3
+- 4.14.3
+- 4.16.1.3
+- 4.18.1
+
+Python version:
+- 3.4.10
+- 3.6.8
+- 3.6.8
+- 3.8.10
+- 3.9.16
+- 3.9.2
+- 3.10.12
+- 3.11.2
+- 3.11.4
+- 3.11.5
+
+So, to target various combinations of these tools' versions we need to be clever-er.
 
 The idea will be to build `hello.c` for each of these platforms and
 "automatically" build it in a matching container. The extra nice part of this
-is that the host platform is now entirely irrelevant. It will generate the 
-same outputs on MacOS, Linux, whatever.
+is that the host platform is now entirely irrelevant.
 
 ---
 
@@ -68,6 +113,8 @@ What next?
 
 - We might also want one for the host system too, whatever that is.
 - Musl libc and Alpine!
+
+---
 
 References:
 

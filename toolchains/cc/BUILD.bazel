@@ -1,6 +1,8 @@
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("@bazel_tools//tools/cpp:unix_cc_toolchain_config.bzl", "cc_toolchain_config")
 
+# A non-hermetic CC toochain for each combination of OS, GLIBC, and GCC.
+
 # The bazel documentation for configuration of C toolchains is voluminous but
 # general. Most examples have "local" or "unknown" set for several attributes
 # without explanation. The following cc_toolchain_config and cc_toolchain rules
@@ -62,7 +64,7 @@ link_libs = [
 opt_link_flags = ["-Wl,--gc-sections"]
 
 # None of these toolchains are hermetic as far as bazel is concerned, so we need
-# and empty set of files to provide to the cc_toolchain rule.
+# an empty set of files to provide to the cc_toolchain rule.
 filegroup(name = "exec-platform-provided")
 
 # While these are named for OS/version they are actually just

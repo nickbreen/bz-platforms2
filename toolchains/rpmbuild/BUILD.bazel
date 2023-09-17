@@ -1,6 +1,12 @@
 # RPM Build toolchain used by pkg_rpm, compatible only with redhat family.
 load("@rules_pkg//toolchains/rpm:rpmbuild.bzl", "rpmbuild_toolchain")
 
+# A non-hermetic RPM build toolchain.
+
+# We could use the version attribute of rpmbuild_toolchain to be specific about
+# which versions of RPM are available on each host, but the versions are not
+# sufficiently different o bother.
+
 rpmbuild_toolchain(
     name = "default",
     path = "/usr/bin/rpmbuild",
@@ -18,4 +24,8 @@ toolchain(
     toolchain_type = "@rules_pkg//toolchains/rpm:rpmbuild_toolchain_type",
 )
 
+# Because RPM builds are non-hermetic, the OS's currently installed for RPM
+# macros pollute the specs pkg_rpm generates. So define out own one that
+# slightly reduces that pollution. Theoretically we'd need one of these for
+# each target OS to codify the idiosyncrasies of each OS.
 exports_files(["template.spec.tpl"])

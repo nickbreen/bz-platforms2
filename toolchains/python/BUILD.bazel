@@ -1,11 +1,16 @@
-# Python3 toolchain used by pkg_deb, compatible with everything.
 load("@rules_python//python:defs.bzl", "py_runtime", "py_runtime_pair")
+
+# A non-hermetic Python toolchain.
+
+# Define a Python 3 toolchain used by pkg_*, compatible with everything. We
+# could be more specific in here (a la //platforms/cc) but it's over the top
+# for Python, assuming that all the various 3.x versions are compatible enough.
 
 py_runtime(
     name = "python3/runtime",
     interpreter_path = "/usr/bin/python3",
     python_version = "PY3",
-    stub_shebang = "#!/usr/bin/python3",  # For gods' sake, stop using /usr/bin/env python3, you never know which (if any) one you'll get
+    stub_shebang = "#!/usr/bin/python3",
 )
 
 py_runtime_pair(
