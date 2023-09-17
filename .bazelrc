@@ -7,6 +7,7 @@ build --show_result=20
 build --verbose_failures
 test --test_output=errors
 test:ci --test_output=all
+build:ci --build_metadata=ROLE=CI
 
 # Critical features required
 build --incompatible_enable_cc_toolchain_resolution
@@ -28,7 +29,6 @@ build:remote --remote_cache=grpc://localhost:1985
 build:remote --remote_timeout=120
 build:remote --remote_executor=grpc://localhost:1985
 
-build:bb --build_metadata=ROLE=CI
 build:bb --bes_results_url=https://app.buildbuddy.io/invocation/
 build:bb --bes_backend=grpcs://remote.buildbuddy.io
 build:bb --remote_cache=grpcs://remote.buildbuddy.io

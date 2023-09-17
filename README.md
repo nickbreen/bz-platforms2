@@ -131,7 +131,7 @@ Problems...
    >     sudo: /bin/sudo must be owned by uid 0 and have the setuid bit set
    >     ================================================================================
 
-   and similar for all DEB and RPM tests.
+   and similar for all DEB and RPM tests. Does not happen in GitHub Actions nor remotely.  
 
 2. Excluding `exec_platforms` from `//:tars` theoretically means it should 
    declare that it is executable on the host: that seems to propagate to being
