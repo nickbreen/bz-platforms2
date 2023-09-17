@@ -137,6 +137,9 @@ Problems...
    declare that it is executable on the host: that seems to propagate to being
    instructions to compile `//:hello` for the host too.
 
+3. We avoided having to think about the difference between target and exec platform by
+   specifying both with the same values. TODO figure that out. I.e. we should be able
+   to specify that `//:tars` _targets_ all platforms, but can _execute_ on the host.
 ---
 
 References:

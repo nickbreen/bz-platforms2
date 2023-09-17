@@ -88,13 +88,13 @@ pkg_tar(
     srcs = [":pkg/hello"],
 )
 
-# Expand :tar to build for all platforms on the host platform! We can do this
-# because it's just tar. We do it by omitting the exec_platforms.
-# We have to do it for CentOS6 as it happens as its Python 3.4 is too old for
-# the pkg_tar rule and it fails.
+# Expand :tar to build for all platforms.
+# Theoretically we should just be able to remove the exec_platforms (or add
+# just @local_config_platform//:host) but there's wrong with it right now.
 platforms(
     name = "tars",
     actual = ":tar",
+    exec_platforms = _all_platforms,
     target_platforms = _all_platforms,
 )
 
