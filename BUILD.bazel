@@ -5,6 +5,25 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load(":defs.bzl", "platforms", "platforms_test")
 load("@rules_cc//cc:defs.bzl", "cc_binary")
 
+# Just conveniences for more concise rules below.
+_rpm_platforms = [
+    "//platforms:centos/6",
+    "//platforms:centos/7",
+    "//platforms:fedora/37",
+    "//platforms:fedora/38",
+    "//platforms:rockylinux/8",
+    "//platforms:rockylinux/9",
+]
+
+_deb_platforms = [
+    "//platforms:debian/11",
+    "//platforms:debian/12",
+    "//platforms:ubuntu/focal",
+    "//platforms:ubuntu/jammy",
+]
+
+_all_platforms = _deb_platforms + _rpm_platforms
+
 # Not built directly, but if done so will fail to build as CppCompile etcetera
 # are configured to *only* build in a container.
 # This *can* be built directly in an arbitrary container by overriding the
@@ -24,30 +43,8 @@ cc_binary(
 platforms(
     name = "hellos",
     actual = ":hello",
-    exec_platforms = [
-        "//platforms:centos/6",
-        "//platforms:centos/7",
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
-    target_platforms = [
-        "//platforms:centos/6",
-        "//platforms:centos/7",
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
+    exec_platforms = _all_platforms,
+    target_platforms = _all_platforms,
 )
 
 # Will execute all binaries on the host platform.
@@ -72,18 +69,7 @@ sh_test(
 # binary built for the matching platform.
 platforms_test(
     name = "platform-hello-test-suite",
-    platforms = [
-        "//platforms:centos/6",
-        "//platforms:centos/7",
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
+    platforms = _all_platforms,
     test = ":platform-hello-test",
 )
 
@@ -102,34 +88,14 @@ pkg_tar(
     srcs = [":pkg/hello"],
 )
 
-# Expand :tar to build for all platforms on each platform.
+# Expand :tar to build for all platforms on the host platform! We can do this
+# because it's just tar. We do it by omitting the exec_platforms.
+# We have to do it for CentOS6 as it happens as its Python 3.4 is too old for
+# the pkg_tar rule and it fails.
 platforms(
     name = "tars",
     actual = ":tar",
-    exec_platforms = [
-        #"//platforms:centos/6",  # CentOS6's Python 3.4 is too old for pkg_tar.
-        "//platforms:centos/7",
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
-    target_platforms = [
-        #"//platforms:centos/6",  # CentOS6's Python 3.4 is too old for pkg_tar.
-        "//platforms:centos/7",
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
+    target_platforms = _all_platforms,
 )
 
 # Will extract and execute all binaries on the host platform.
@@ -153,18 +119,7 @@ sh_test(
 # binary built for the matching platform.
 platforms_test(
     name = "platform-tar-test-suite",
-    platforms = [
-        # "//platforms:centos/6",  # CentOS6's Python 3.4 is too old for pkg_tar.
-        "//platforms:centos/7",
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
+    platforms = _all_platforms,
     test = ":platform-tar-test",
 )
 
@@ -177,7 +132,7 @@ pkg_rpm(
     architecture = "x86_64",
     description = "Hello GLIBC",
     license = "MIT",
-    release = "0",  # redhat family will need a el6/7/8/9 constraint to switch this on
+    release = "0",  # TODO redhat family will need an el:6/7/8/9 constraint to switch this on as 0.elx
     requires = ["glibc"],
     spec_template = "//toolchains/rpmbuild:template.spec.tpl",  # because RPM's suck
     summary = "Hello GLIBC",
@@ -190,22 +145,8 @@ pkg_rpm(
 platforms(
     name = "rpms",
     actual = ":rpm",
-    exec_platforms = [
-        "//platforms:centos/6",
-        "//platforms:centos/7",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-    ],
-    target_platforms = [
-        "//platforms:centos/6",
-        "//platforms:centos/7",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-    ],
+    exec_platforms = _rpm_platforms,
+    target_platforms = _rpm_platforms,
 )
 
 # Will install and execute all binaries on the host platform. Requires running
@@ -231,14 +172,7 @@ sh_test(
 # binary built for the matching platform.
 platforms_test(
     name = "platform-rpm-test-suite",
-    platforms = [
-        "//platforms:centos/6",
-        "//platforms:centos/7",
-        "//platforms:fedora/37",
-        "//platforms:fedora/38",
-        "//platforms:rockylinux/8",
-        "//platforms:rockylinux/9",
-    ],
+    platforms = _rpm_platforms,
     test = ":platform-rpm-test",
 )
 
@@ -260,18 +194,8 @@ pkg_deb(
 platforms(
     name = "debs",
     actual = ":deb",
-    exec_platforms = [
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
-    target_platforms = [
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
+    exec_platforms = _deb_platforms,
+    target_platforms = _deb_platforms,
 )
 
 # Will install and execute all binaries on the host platform. Requires running
@@ -288,7 +212,7 @@ sh_test(
 sh_test(
     name = "platform-deb-test",
     srcs = ["pkg.test.sh"],
-    args = ["$(rootpaths :deb)"],  # pkg_deb produces two RPM files >:(
+    args = ["$(rootpaths :deb)"],
     data = [":deb"],
 )
 
@@ -297,11 +221,6 @@ sh_test(
 # binary built for the matching platform.
 platforms_test(
     name = "platform-deb-test-suite",
-    platforms = [
-        "//platforms:debian/11",
-        "//platforms:debian/12",
-        "//platforms:ubuntu/focal",
-        "//platforms:ubuntu/jammy",
-    ],
+    platforms = _deb_platforms,
     test = ":platform-deb-test",
 )

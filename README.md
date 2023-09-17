@@ -116,6 +116,25 @@ What next?
 
 ---
 
+Problems...
+
+1. Failures on Ubuntu 23.04/lunar with docker provided by Ubuntu's docker.io package. 
+
+       bazel test --config docker //:platform-{hello,tar,deb,rpm}-test-suite --keep_going
+   
+   >     FAIL: //:platform-rpm-test_0_centos/6 (see /home/nick/.cache/bazel/_bazel_nick/536d4a2f7bb7c864cad311a4771d7d40/execroot/_main/bazel-out/k8-fastbuild-ST-8ca70333f868/testlogs/platform-rpm-test_0_centos/6/test.log)
+   >     INFO: From Testing //:platform-rpm-test_0_centos/6:
+   >     ==================== Test output for //:platform-rpm-test_0_centos/6:
+   >     + exec platform-rpm-test ./hello-0-0.x86_64.rpm ./hello.rpm
+   >     + sudo rpm --install ./hello-0-0.x86_64.rpm
+   >     sudo: /etc/sudo.conf is owned by uid 65534, should be 0
+   >     sudo: /bin/sudo must be owned by uid 0 and have the setuid bit set
+   >     ================================================================================
+
+   and similar for all DEB and RPM tests.
+
+---
+
 References:
 
 - https://bazel.build/extending/config

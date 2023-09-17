@@ -5,15 +5,21 @@ common --ui_actions_shown 64
 build --incompatible_strict_action_env
 build --show_result=20
 build --verbose_failures
-build --incompatible_enable_cc_toolchain_resolution
-build --experimental_platforms_api
 test --test_output=errors
 test:ci --test_output=all
+
+# Critical features required
+build --incompatible_enable_cc_toolchain_resolution
+build --experimental_platforms_api
+
+# Expected that tags = ["no-remote-exec"] would have sufficed, but apparently it does not.
+# So, disable remote for pkg_tar, it is allowed execute on the host.
+build --strategy=PackageTar=worker,sandboxed,local
 
 build:docker --experimental_docker_verbose
 build:docker --experimental_enable_docker_sandbox
 build:docker --experimental_docker_use_customized_images
-build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker --strategy=MakeDeb=docker --strategy=PackageTar=docker
+build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker --strategy=MakeDeb=docker
 build:docker --experimental_docker_privileged
 
 build:remote --bes_results_url=http://localhost:8080/invocation/
@@ -29,8 +35,6 @@ build:bb --remote_cache=grpcs://remote.buildbuddy.io
 build:bb --remote_executor=grpcs://remote.buildbuddy.io
 build:bb --remote_upload_local_results
 build:bb --jobs=100
-
-build --toolchain_resolution_debug=@rules_python//python:toolchain_type
 
 # Invalidate all outputs by setting a new value for the environment variable "FUDGE".
 # e.g. export FUDGE="$(date)"
