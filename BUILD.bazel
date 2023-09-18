@@ -50,6 +50,7 @@ platforms(
 # Will execute all binaries on the host platform.
 sh_test(
     name = "host-hellos-test",
+    size = "small",
     srcs = ["hello.test.sh"],
     args = ["$(rootpaths :hellos)"],
     data = [":hellos"],
@@ -59,6 +60,7 @@ sh_test(
 # Not executed directly, but if done so will fail to build :hello as above.
 sh_test(
     name = "platform-hello-test",
+    size = "small",
     srcs = ["hello.test.sh"],
     args = ["$(rootpath :hello)"],
     data = [":hello"],
@@ -101,6 +103,7 @@ platforms(
 # Will extract and execute all binaries on the host platform.
 sh_test(
     name = "host-tars-test",
+    size = "small",
     srcs = ["pkg.test.sh"],
     args = ["$(rootpaths :tars)"],
     data = [":tars"],
@@ -109,6 +112,7 @@ sh_test(
 # Not executed directly, but if done so will fail to build :hello as above.
 sh_test(
     name = "platform-tar-test",
+    size = "small",
     srcs = ["pkg.test.sh"],
     args = ["$(rootpath :tar)"],
     data = [":tar"],
@@ -153,6 +157,7 @@ platforms(
 # on a host with RPM Utils and manually specifying a --extra_execution_platform
 sh_test(
     name = "host-rpms-test",
+    size = "small",
     srcs = ["pkg.test.sh"],
     args = ["$(rootpaths :rpms)"],
     data = [":rpms"],
@@ -162,6 +167,7 @@ sh_test(
 # Not executed directly, but if done so will fail to build :hello as above.
 sh_test(
     name = "platform-rpm-test",
+    size = "small",
     srcs = ["pkg.test.sh"],
     args = ["$(rootpaths :rpm)"],  # pkg_rpm produces two RPM files >:(
     data = [":rpm"],
@@ -202,6 +208,7 @@ platforms(
 # on a host with RPM Utils and manually specifying a --extra_execution_platform
 sh_test(
     name = "host-debs-test",
+    size = "small",
     srcs = ["pkg.test.sh"],
     args = ["$(rootpaths :debs)"],
     data = [":debs"],
@@ -211,6 +218,7 @@ sh_test(
 # Not executed directly, but if done so will fail to build :hello as above.
 sh_test(
     name = "platform-deb-test",
+    size = "small",
     srcs = ["pkg.test.sh"],
     args = ["$(rootpaths :deb)"],
     data = [":deb"],

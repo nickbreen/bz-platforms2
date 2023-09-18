@@ -137,9 +137,16 @@ Problems...
    declare that it is executable on the host: that seems to propagate to being
    instructions to compile `//:hello` for the host too.
 
-3. We avoided having to think about the difference between target and exec platform by
-   specifying both with the same values. TODO figure that out. I.e. we should be able
+3. We've avoided having to think about the difference between target and exec platform
+   by specifying both with the same values. TODO figure that out. I.e. we should be able
    to specify that `//:tars` _targets_ all platforms, but can _execute_ on the host.
+
+4. Adding `sh_test(size = "small")` didn't appear to appease `--test_verbose_timeout_warnings`.
+   Suspect that the size (among other attributes) does not get propagated through the 
+   platforms rule. 
+
+5. Expected that `pkg_tar(tags = ["no-remote-exec"])` would have indicated that it
+   should execute on the host. Why didn't it? 
 ---
 
 References:
