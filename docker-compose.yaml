@@ -1,62 +1,40 @@
 volumes:
-  mysql:
   redis:
+
+configs:
+  buildfarm:
+    file: ./buildfarm.config.yaml
+
 services:
-  mysql:
-    image: mariadb:latest
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
-      MYSQL_USER: buildbuddy
-      MYSQL_PASSWORD: buildbuddy
-      MYSQL_DATABASE: buildbuddy
-    volumes:
-      - mysql:/var/lib/mysql
-    healthcheck:
-      test: [CMD-SHELL, "mariadb -u$${MYSQL_USER?} -p$${MYSQL_PASSWORD?} $${MYSQL_DATABASE?}"]
-  redis:
-    image: redis:latest
+  backplane:
+    image: redis
     volumes:
       - redis:/data
     healthcheck:
       test: [CMD, redis-cli, ping]
-  app:
+  server:
     depends_on:
-      mysql:
+      backplane:
         condition: service_healthy
-      redis:
-        condition: service_healthy
-    image: gcr.io/flame-public/buildbuddy-app-enterprise:latest
+    image: bazelbuild/buildfarm-server
+    configs:
+      - buildfarm
     environment:
-      ENV: onprem
+      CONFIG_PATH: /buildfarm
+      REDIS_URI: "redis://backplane:6379"
     ports:
-      - 8080:8080
-      - 1985:1985
-    command:
-      - "--app.build_buddy_url=http://localhost:8080"
-      - "--app.events_api_url=grpc://localhost:1985"
-      - "--app.cache_api_url=grpc://localhost:1985"
-      - "--app.remote_execution_api_url=grpc://localhost:1985"
-      - "--app.default_redis_target=redis:6379"
-      - "--auth.enable_anonymous_usage=true"
-      - "--auth.enable_self_auth=true"
-      - "--cache.redis.redis_target=redis:6379"
-      - "--cache.redis_target=redis:6379"
-      - "--database.data_source=mysql://buildbuddy:buildbuddy@tcp(mysql)/buildbuddy"
-      - "--remote_execution.enable_remote_exec=true"
-      - "--storage.disk.root_directory=/var/cache/buildbuddy"
-    volumes:
-      - /var/cache/buildbuddy
-  executor:
+      - 8980:8980
+  worker:
+    ports:
+      - 8981:8981
     depends_on:
-      - app
-    image: gcr.io/flame-public/buildbuddy-executor-enterprise:latest
+      - server
+    image: bazelbuild/buildfarm-worker
     privileged: true
-    command:
-      - "--executor.app_target=grpc://app:1985"
-      - "--executor.local_cache_size_bytes=5368709120"
-      - "--executor.docker_socket=/var/run/docker.sock"
-      - "--executor.root_directory=/var/tmp/buildbuddy"
-      - "--executor.disable_local_cache=true"
+    configs:
+      - buildfarm
+    environment:
+      CONFIG_PATH: /buildfarm
+      REDIS_URI: "redis://backplane:6379"
     volumes:
-      - /var/tmp/buildbuddy:/var/tmp/buildbuddy:rw
       - /var/run/docker.sock:/var/run/docker.sock

@@ -7,12 +7,10 @@ Emulate remote builds with the experimental docker strategy:
     ( cd executors; docker buildx bake )
     bazel test --config docker //:platform-{hello,tar,deb,rpm}-test-suite
 
-Start a local instance of BuildBuddy with remote execution enabled and your API
-Key configured in `~/.bazelrc` 
-as `build:remote --remote_header=x-buildbuddy-api-key=[REDACTED]`:
+Start a local instance of BuildFarm:
     
     docker compose up -d
-    bazel test --config remote //:platform-{hello,tar,deb,rpm}-test-suite
+    bazel test --config bf //:platform-{hello,tar,deb,rpm}-test-suite
 
 Use BuildBuddy Cloud and your API Key configured in `~/.bazelrc` 
 as `build:bb --remote_header=x-buildbuddy-api-key=[REDACTED]`: 
@@ -118,7 +116,7 @@ What next?
 
 Problems...
 
-1. Failures on Ubuntu 23.04/lunar with docker provided by Ubuntu's docker.io package. 
+1. Failures on Ubuntu 23.04/lunar with docker provided by Ubuntu's docker snap: 
 
        bazel test --config docker //:platform-{hello,tar,deb,rpm}-test-suite --keep_going
    
@@ -131,7 +129,7 @@ Problems...
    >     sudo: /bin/sudo must be owned by uid 0 and have the setuid bit set
    >     ================================================================================
 
-   and similar for all DEB and RPM tests. Does not happen in GitHub Actions nor remotely.  
+   and similar for all DEB and RPM tests. Does not happen in GitHub Actions nor remotely.
 
 2. Excluding `exec_platforms` from `//:tars` theoretically means it should 
    declare that it is executable on the host: that seems to propagate to being

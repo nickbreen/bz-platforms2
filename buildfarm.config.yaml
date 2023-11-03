@@ -1,0 +1,10 @@
+backplane:
+  queues:
+    - name: "cpu"
+      properties:
+        - name: "min-cores"
+          value: "*"
+        - name: "max-cores"
+          value: "*"
+worker:
+  allowBringYourOwnContainer: true

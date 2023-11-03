@@ -23,11 +23,12 @@ build:docker --experimental_docker_use_customized_images
 build:docker --strategy=CppCompile=docker --strategy=CppLink=docker --strategy=CcStrip=docker --strategy=MakeRpm=docker --strategy=MakeDeb=docker
 build:docker --experimental_docker_privileged
 
-build:remote --bes_results_url=http://localhost:8080/invocation/
-build:remote --bes_backend=grpc://localhost:1985
-build:remote --remote_cache=grpc://localhost:1985
-build:remote --remote_timeout=120
-build:remote --remote_executor=grpc://localhost:1985
+build:bf --bes_results_url=http://localhost:8080/invocation/
+build:bf --bes_backend=grpc://localhost:8980
+build:bf --remote_cache=grpc://localhost:8980
+build:bf --remote_timeout=120
+build:bf --remote_executor=grpc://localhost:8980
+build:bb --remote_upload_local_results
 
 build:bb --bes_results_url=https://app.buildbuddy.io/invocation/
 build:bb --bes_backend=grpcs://remote.buildbuddy.io
